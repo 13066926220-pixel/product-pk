@@ -401,6 +401,66 @@
             margin-bottom: 12px;
         }
 
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .section-header-row .section-title {
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+
+        /* 基准商品卡片 */
+        .benchmark-product {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 10px;
+            flex-shrink: 0;
+        }
+
+        .benchmark-product .benchmark-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+        .benchmark-product .benchmark-info {
+            color: var(--text-primary);
+            min-width: 0;
+        }
+
+        .benchmark-product .benchmark-label {
+            font-size: 8px;
+            color: var(--text-hint);
+            margin-bottom: 1px;
+        }
+
+        .benchmark-product .benchmark-name {
+            font-size: 10px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .benchmark-product .benchmark-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
         /* 商品对比卡片 */
         .compare-cards {
             display: flex;
@@ -420,6 +480,22 @@
             border-radius: 12px;
             padding: 12px;
             text-align: center;
+            position: relative;
+        }
+
+        .compare-card .product-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
         }
 
         .compare-card .img {
@@ -535,6 +611,44 @@
 
         .indicator-detail-row:last-child {
             border-bottom: none;
+        }
+
+        /* 雷达图样式 */
+        .radar-chart-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            padding: 8px 12px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        #radarChart {
+            /* 尺寸由JS动态计算 */
+        }
+
+        .radar-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .radar-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .radar-legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
         }
 
         .show-more-btn {
@@ -766,8 +880,8 @@
         .price-section {
             background: #fff;
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
             border: 1px solid var(--border-color);
         }
 
@@ -829,6 +943,11 @@
             margin-top: 4px;
         }
 
+        .price-section-header .premium-badge.high {
+            background: #FFF1F0;
+            color: #FF4D4F;
+        }
+
         .price-mini-chart {
             height: 80px;
             position: relative;
@@ -852,6 +971,10 @@
 
         .price-section-footer .min-price-hint {
             color: #52C41A;
+        }
+
+        .price-section-footer .benchmark-hint {
+            color: #FA8C16;
         }
 
         .chart-date-labels {
@@ -1151,7 +1274,14 @@
 
             <!-- 商品核心指标 -->
             <div class="section">
-                <div class="section-title">商品核心指标</div>
+                <div class="section-header-row">
+                    <div class="section-title">商品核心指标</div>
+                    <!-- 雷达图区域 -->
+                    <div class="radar-chart-container">
+                        <canvas id="radarChart"></canvas>
+                        <div class="radar-legend" id="radarLegend"></div>
+                    </div>
+                </div>
                 <div id="indicators">
                     <!-- 动态生成 -->
                 </div>
@@ -1166,7 +1296,12 @@
 
             <!-- 商品溢价估算 -->
             <div class="section">
-                <div class="section-title">商品溢价估算</div>
+                <div class="section-header-row">
+                    <div class="section-title">商品溢价估算</div>
+                    <div class="benchmark-product" id="benchmarkProduct">
+                        <!-- 基准商品卡片动态生成 -->
+                    </div>
+                </div>
                 <div id="priceSections">
                     <!-- 每个商品的价格区块动态生成 -->
                 </div>
@@ -1186,6 +1321,13 @@
     </div>
 
     <script>
+        // ==================== 品类出厂价基准（人工定义）====================
+        const categoryBenchmarkPrice = {
+            yoga_pants: 50,  // 瑜伽裤出厂价基准
+            fragrance: 20,   // 香薰出厂价基准
+            bedding: 100     // 四件套出厂价基准
+        };
+
         // ==================== 完整模拟数据 ====================
         // 使用文档中的真实图片链接
         const mockProductsDB = {
@@ -1198,7 +1340,7 @@
                     url: 'https://detail.1688.com/offer/732095503102.html',
                     price: 68,
                     category: 'yoga_pants',
-                    image: 'https://gw.alicdn.com/bao/uploaded/i2/4031072700/O1CN01ZkiLXL1VoeO9lVv6o_!!4031072700.jpg_.webp',
+                    image: 'https://cbu01.alicdn.com/img/ibank/O1CN0163v6Ok1ZEFUKCHmcL_!!3058633162-0-cib.jpg',
                     material: { mainFabric: '锦纶氨纶混纺', composition: '80% 锦纶 + 20% 氨纶', gramWeight: '180g/m²' },
                     safety: { safetyLevel: '未标注', antibacterial: '无', formaldehyde: '未检测', pH: '未检测', fluorescence: '未检测' },
                     specs: { elastaneContent: '20%', breathability: '≥120mm/s', pillingResistance: '未标注', elasticRecovery: '未标注' },
@@ -1256,7 +1398,7 @@
                     url: 'https://detail.1688.com/offer/902195705858.html',
                     price: 28,
                     category: 'fragrance',
-                    image: 'https://img.alicdn.com/imgextra/i2/O1CN01htxQzE1ngYVHw2Gdy_!!3165365119-0-cib.jpg',
+                    image: 'https://cbu01.alicdn.com/img/ibank/O1CN012iOGQV1ngYVJLDgJJ_!!3165365119-0-cib.jpg',
                     fragrance: { family: '混合花香调', topNotes: '未标注', middleNotes: '未标注', baseNotes: '未标注', longevity: '15-20天' },
                     safety: { IFRACompliance: false, allergens: '未标注', origin: '中国' },
                     certificates: [],
@@ -1563,8 +1705,10 @@
             document.getElementById('savedAmount').textContent = '¥' + (maxPrice - minPrice);
 
             // 生成对比卡片
-            const compareCardsHtml = analyzedProducts.map(p => `
+            const badgeColors = ['#7B5CFF', '#FF6B6B', '#4ECDC4', '#FFE66D'];
+            const compareCardsHtml = analyzedProducts.map((p, i) => `
                 <div class="compare-card">
+                    <div class="product-badge" style="background: ${badgeColors[i]}">${String.fromCharCode(65+i)}</div>
                     <img class="img" src="${p.image}" alt="">
                     <div class="name">${p.name}</div>
                     <div class="price">¥${p.price}</div>
@@ -1575,11 +1719,189 @@
             // 根据品类生成指标
             generateIndicators();
 
+            // 绘制雷达图
+            drawRadarChart();
+
             // 生成价格图表
             generatePriceChart();
 
             // 生成口碑
             generateReputations();
+        }
+
+        // 绘制雷达图
+        function drawRadarChart() {
+            const canvas = document.getElementById('radarChart');
+            if (!canvas || analyzedProducts.length < 2) return;
+
+            // 根据品类确定雷达图维度（包含所有指标，和下面展示的一致）
+            const category = analyzedProducts[0]?.category;
+            let dimensions = [];
+
+            if (category === 'yoga_pants') {
+                // 瑜伽裤：抗菌安全、透气排汗、面料弹性 + 面料成分
+                dimensions = ['抗菌安全', '透气排汗', '面料弹性', '面料成分'];
+            } else if (category === 'fragrance') {
+                // 香薰：香调分析、留香时长、安全认证 + 酒精含量
+                dimensions = ['香调分析', '留香时长', '安全认证', '酒精含量'];
+            } else if (category === 'bedding') {
+                dimensions = ['安全等级', '透气性能', '亲肤舒适', '耐用性'];
+            } else {
+                dimensions = ['品质', '安全', '口碑', '性价比'];
+            }
+
+            const numDimensions = dimensions.length;
+
+            // 根据维度数量和文字长度动态计算尺寸
+            const maxTextLen = Math.max(...dimensions.map(d => d.length));
+            const baseRadius = 45;
+            const labelPadding = maxTextLen * 10 + 15; // 文字长度影响padding
+            const displayWidth = (baseRadius + labelPadding) * 2;
+            const displayHeight = (baseRadius + labelPadding) * 2;
+            const radius = baseRadius;
+
+            // 适配高分屏
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = displayWidth * dpr;
+            canvas.height = displayHeight * dpr;
+            canvas.style.width = displayWidth + 'px';
+            canvas.style.height = displayHeight + 'px';
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const centerX = displayWidth / 2;
+            const centerY = displayHeight / 2;
+
+            // 计算每个商品的评分
+            const scores = analyzedProducts.map(p => {
+                if (category === 'yoga_pants') {
+                    return [
+                        calculateScore(p.safety.antibacterial, ['AAA级抗菌', 'AA级抗菌', 'A级抗菌'], 100),
+                        Math.min(100, extractNumber(p.specs.breathability) / 2.5),
+                        Math.min(100, extractNumber(p.specs.elastaneContent) * 3.5),
+                        p.material?.mainFabric ? 80 : 60 // 面料成分
+                    ];
+                } else if (category === 'fragrance') {
+                    return [
+                        70, // 香调分析默认分
+                        p.fragrance.longevity ? extractNumber(p.fragrance.longevity) * 3 : 50, // 留香时长
+                        p.safety.IFRACompliance ? 90 : 50, // 安全认证
+                        p.fragrance.alcoholContent ? 70 : 50 // 酒精含量
+                    ];
+                } else if (category === 'bedding') {
+                    return [
+                        p.safety.safetyLevel?.includes('A类') ? 100 : 70,
+                        Math.min(100, extractNumber(p.specs.breathability) / 2.5),
+                        80,
+                        extractNumber(p.safety.shrinkage) ? (100 - extractNumber(p.safety.shrinkage) * 20) : 70
+                    ];
+                }
+                return [70, 70, 70, 70];
+            });
+
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制背景网格
+            const levels = 5;
+            ctx.strokeStyle = '#E5E5E5';
+            ctx.lineWidth = 1;
+
+            for (let i = 1; i <= levels; i++) {
+                ctx.beginPath();
+                for (let j = 0; j <= numDimensions; j++) {
+                    const angle = (Math.PI * 2 * j) / numDimensions - Math.PI / 2;
+                    const r = (radius * i) / levels;
+                    const x = centerX + r * Math.cos(angle);
+                    const y = centerY + r * Math.sin(angle);
+                    if (j === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            // 绘制轴线
+            ctx.strokeStyle = '#E5E5E5';
+            for (let i = 0; i < numDimensions; i++) {
+                const angle = (Math.PI * 2 * i) / numDimensions - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            // 绘制维度标签 - 统一距离，canvas已经预留了足够空间
+            ctx.fillStyle = '#666666';
+            ctx.font = '10px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            for (let i = 0; i < numDimensions; i++) {
+                const angle = (Math.PI * 2 * i) / numDimensions - Math.PI / 2;
+                const labelRadius = radius + 18;
+                const x = centerX + labelRadius * Math.cos(angle);
+                const y = centerY + labelRadius * Math.sin(angle);
+                ctx.fillText(dimensions[i], x, y + 3);
+            }
+
+            // 绘制每个商品的数据
+            const colors = ['#7B5CFF', '#FF6B6B', '#4ECDC4', '#FFE66D'];
+            scores.forEach((productScores, productIndex) => {
+                ctx.beginPath();
+                ctx.fillStyle = colors[productIndex] + '40'; // 40%透明度
+                ctx.strokeStyle = colors[productIndex];
+                ctx.lineWidth = 1.5;
+
+                for (let i = 0; i <= numDimensions; i++) {
+                    const idx = i % numDimensions;
+                    const angle = (Math.PI * 2 * idx) / numDimensions - Math.PI / 2;
+                    const value = Math.min(100, Math.max(0, productScores[idx]));
+                    const r = (radius * value) / 100;
+                    const x = centerX + r * Math.cos(angle);
+                    const y = centerY + r * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // 绘制数据点
+                for (let i = 0; i < numDimensions; i++) {
+                    const angle = (Math.PI * 2 * i) / numDimensions - Math.PI / 2;
+                    const value = Math.min(100, Math.max(0, productScores[i]));
+                    const r = (radius * value) / 100;
+                    const x = centerX + r * Math.cos(angle);
+                    const y = centerY + r * Math.sin(angle);
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = colors[productIndex];
+                    ctx.fill();
+                }
+            });
+
+            // 生成图例
+            const legendHtml = analyzedProducts.map((p, i) => `
+                <div class="radar-legend-item">
+                    <div class="radar-legend-color" style="background: ${colors[i]}"></div>
+                    <span>${String.fromCharCode(65+i)}商品</span>
+                </div>
+            `).join('');
+            document.getElementById('radarLegend').innerHTML = legendHtml;
+        }
+
+        // 辅助函数：计算评分
+        function calculateScore(value, goodValues, maxScore) {
+            const idx = goodValues.findIndex(v => value?.includes(v));
+            return idx >= 0 ? maxScore - idx * 15 : 50;
+        }
+
+        // 辅助函数：提取数字
+        function extractNumber(str) {
+            if (!str) return 50;
+            const match = String(str).match(/(\d+(\.\d+)?)/);
+            return match ? parseFloat(match[1]) : 50;
         }
 
         // 生成指标对比
@@ -1612,6 +1934,17 @@
                                     <div class="indicator-detail-row"><span>甲醛含量</span><span>${p.safety.formaldehyde}</span></div>
                                     <div class="indicator-detail-row"><span>pH值</span><span>${p.safety.pH}</span></div>
                                     <div class="indicator-detail-row"><span>荧光剂</span><span>${p.safety.fluorescence}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1632,11 +1965,22 @@
                             <div class="indicator-detail-title">详细参数对比</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>透气性</span><span>${p.specs.breathability}</span></div>
                                     <div class="indicator-detail-row"><span>吸湿排汗</span><span>${p.specs.moistureWicking || '未标注'}</span></div>
                                     <div class="indicator-detail-row"><span>面料成分</span><span>${p.material.composition}</span></div>
                                     <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1657,11 +2001,22 @@
                             <div class="indicator-detail-title">详细参数对比</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>氨纶含量</span><span>${p.specs.elastaneContent}</span></div>
                                     <div class="indicator-detail-row"><span>弹性回复率</span><span>${p.specs.elasticRecovery}</span></div>
                                     <div class="indicator-detail-row"><span>抗起球等级</span><span>${p.specs.pillingResistance}</span></div>
                                     <div class="indicator-detail-row"><span>四面弹力</span><span>${p.specs.fourWayStretch ? '支持' : '不支持'}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1670,34 +2025,6 @@
 
                 // 更多指标
                 moreIndicatorsHtml = `
-                    <div class="indicator-item">
-                        <div class="indicator-header">
-                            <div class="indicator-header-left">
-                                <span class="icon">🔍</span>
-                                <span class="title">检测报告</span>
-                            </div>
-                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
-                        </div>
-                        <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => {
-                                const certCount = p.certificates.length;
-                                return `<span class="highlight">${String.fromCharCode(65+i)}商品</span>有${certCount}份检测报告${certCount > 0 ? '，已验证' : '，无检测报告'}、`;
-                            }).join('')}
-                        </div>
-                        <div class="indicator-detail">
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品 - 检测报告</div>
-                                    ${p.certificates.map(cert => `
-                                        <div class="indicator-detail-row">
-                                            <span>${cert.name}</span>
-                                            <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                        </div>
-                                    `).join('') || '<div style="color: #999;">暂无检测报告</div>'}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
@@ -1713,10 +2040,21 @@
                             <div class="indicator-detail-title">面料成分详解</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>主要面料</span><span>${p.material.mainFabric}</span></div>
                                     <div class="indicator-detail-row"><span>成分组成</span><span>${p.material.composition}</span></div>
                                     <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1740,11 +2078,22 @@
                             <div class="indicator-detail-title">香调详细对比</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>香调家族</span><span>${p.fragrance.family}</span></div>
                                     <div class="indicator-detail-row"><span>前调</span><span>${p.fragrance.topNotes}</span></div>
                                     <div class="indicator-detail-row"><span>中调</span><span>${p.fragrance.middleNotes}</span></div>
                                     <div class="indicator-detail-row"><span>后调</span><span>${p.fragrance.baseNotes}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1764,9 +2113,20 @@
                             <div class="indicator-detail-title">留香详细对比</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>留香时长</span><span>${p.fragrance.longevity}</span></div>
                                     <div class="indicator-detail-row"><span>扩散范围</span><span>${p.fragrance.sillage || '未标注'}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1786,10 +2146,21 @@
                             <div class="indicator-detail-title">安全认证详情</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>IFRA认证</span><span style="color: ${p.safety.IFRACompliance ? '#52C41A' : '#FF4D4F'}">${p.safety.IFRACompliance ? '通过' : '未通过'}</span></div>
                                     <div class="indicator-detail-row"><span>致敏原</span><span>${Array.isArray(p.safety.allergens) ? p.safety.allergens.join('、') : p.safety.allergens}</span></div>
                                     <div class="indicator-detail-row"><span>产地</span><span>${p.safety.origin}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1813,9 +2184,20 @@
                             <div class="indicator-detail-title">酒精含量详情</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>酒精含量</span><span>${p.fragrance.alcoholContent || '未标注'}</span></div>
                                     <div class="indicator-detail-row"><span>包装规格</span><span>${p.specs?.packaging || '未标注'}</span></div>
+                                    ${p.certificates.length > 0 ? `
+                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
+                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
+                                            ${p.certificates.map(cert => `
+                                                <div class="indicator-detail-row" style="font-size: 11px;">
+                                                    <span>${cert.name}</span>
+                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -1839,7 +2221,7 @@
                             <div class="indicator-detail-title">面料品质详情</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>面料</span><span>${p.material.fabric}</span></div>
                                     <div class="indicator-detail-row"><span>支数</span><span>${p.material.yarnCount}</span></div>
                                     <div class="indicator-detail-row"><span>织造工艺</span><span>${p.material.weavingProcess}</span></div>
@@ -1864,7 +2246,7 @@
                             <div class="indicator-detail-title">安全等级详情</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>安全等级</span><span>${p.safety.safetyLevel}</span></div>
                                     <div class="indicator-detail-row"><span>甲醛含量</span><span>${p.safety.formaldehyde}</span></div>
                                     <div class="indicator-detail-row"><span>pH值</span><span>${p.safety.pH}</span></div>
@@ -1889,7 +2271,7 @@
                             <div class="indicator-detail-title">透气性能详情</div>
                             ${analyzedProducts.map((p, i) => `
                                 <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
                                     <div class="indicator-detail-row"><span>透气性</span><span>${p.specs.breathability}</span></div>
                                     <div class="indicator-detail-row"><span>抗起球等级</span><span>${p.specs.pillingResistance}</span></div>
                                     <div class="indicator-detail-row"><span>手感</span><span>${p.specs.handFeel}</span></div>
@@ -1988,11 +2370,38 @@
             const container = document.getElementById('priceSections');
             if (!container) return;
 
+            // 获取品类出厂价基准
+            const category = analyzedProducts[0]?.category || 'yoga_pants';
+            const benchmarkPrice = categoryBenchmarkPrice[category] || 50;
+
+            // 品类名称映射
+            const categoryNames = {
+                'yoga_pants': '高腰瑜伽裤',
+                'aromatherapy': '香薰',
+                'bedding_set': '四件套'
+            };
+            const categoryName = categoryNames[category] || '商品';
+
+            // 获取基准商品信息（用第一个商品作为参考）
+            const firstProduct = analyzedProducts[0];
+
+            // 生成基准商品卡片
+            const benchmarkHtml = `
+                <img class="benchmark-img" src="${firstProduct.image}" alt="">
+                <div class="benchmark-info">
+                    <div class="benchmark-label">1688同款出厂价</div>
+                    <div class="benchmark-name">${categoryName}</div>
+                    <div class="benchmark-price">¥${benchmarkPrice}</div>
+                </div>
+            `;
+            document.getElementById('benchmarkProduct').innerHTML = benchmarkHtml;
+
             // 为每个商品生成独立的价格区块
             const html = analyzedProducts.map((product, index) => {
                 const letter = String.fromCharCode(65 + index);
-                const premium = product.price - product.lowestPrice;
-                const isLowest = premium <= 0;
+                const premiumValue = product.price - benchmarkPrice;
+                const premium = premiumValue.toFixed(2);
+                const premiumPercent = ((premiumValue / benchmarkPrice) * 100).toFixed(1);
 
                 // 生成30天价格数据
                 const priceData = generate30DayPrices(product.priceHistory, product.price);
@@ -2008,10 +2417,7 @@
                             <div class="current-price-box">
                                 <div class="price-label">零售价</div>
                                 <div class="current-price">¥${product.price}</div>
-                                ${isLowest ?
-                                    '<div class="lowest-badge">当前已是最低价</div>' :
-                                    `<div class="premium-badge">溢价 ¥${premium}</div>`
-                                }
+                                <div class="premium-badge ${premiumValue > 100 ? 'high' : ''}">溢价 ¥${premium} (${premiumPercent}%)</div>
                             </div>
                         </div>
                         <div class="price-mini-chart">
@@ -2213,22 +2619,23 @@
             const selectedPrice = priceData.prices[dateIndex];
             const product = priceData.product;
 
+            // 获取出厂价基准
+            const category = product.category || 'yoga_pants';
+            const benchmarkPrice = categoryBenchmarkPrice[category] || 50;
+
             // 更新该商品区块的价格显示
             const section = document.querySelectorAll('.price-section')[productIndex];
             if (!section) return;
 
             const priceBox = section.querySelector('.current-price-box');
             if (priceBox) {
-                const premium = product.price - product.lowestPrice;
-                const isLowest = selectedPrice <= product.lowestPrice;
+                const premium = (selectedPrice - benchmarkPrice).toFixed(2);
+                const premiumPercent = ((parseFloat(premium) / benchmarkPrice) * 100).toFixed(1);
 
                 priceBox.innerHTML = `
                     <div class="price-label">${days[dateIndex].fullStr}</div>
                     <div class="current-price">¥${selectedPrice}</div>
-                    ${isLowest ?
-                        '<div class="lowest-badge">当前已是最低价</div>' :
-                        `<div class="premium-badge">溢价 ¥${Math.round(selectedPrice - product.lowestPrice)}</div>`
-                    }
+                    <div class="premium-badge ${parseFloat(premium) > 100 ? 'high' : ''}">溢价 ¥${premium} (${premiumPercent}%)</div>
                 `;
             }
         }
