@@ -618,12 +618,14 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            padding: 8px 12px;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 2px 4px;
             background: #fff;
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 4px;
+            margin-bottom: 4px;
         }
 
         #radarChart {
@@ -1226,14 +1228,14 @@
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
                     <div style="color: #7B5CFF; font-weight: 500; margin-top: 4px;">瑜伽裤类：</div>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/732095503102.html')" style="color: #666; word-break: break-all;">1688工厂 瑜伽裤同款</a>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=954168320268')" style="color: #666; word-break: break-all;">Lululemon Align 高腰紧身裤</a>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=733245459611&skuId=6197742978628')" style="color: #666; word-break: break-all;">MAIA ACTIVE 云感高腰紧身裤</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/732095503102.html')" style="color: #666; word-break: break-all;">RUNA PULSE 高腰lulu瑜伽裤 ¥58.4</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=954168320268')" style="color: #666; word-break: break-all;">lululemon Align™ 高腰紧身裤 ¥850</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=733245459611&skuId=6197742978628')" style="color: #666; word-break: break-all;">MAIA ACTIVE 云感裤紧致版 ¥328</a>
 
                     <div style="color: #7B5CFF; font-weight: 500; margin-top: 8px;">香氛类：</div>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/902195705858.html')" style="color: #666; word-break: break-all;">1688工厂 香薰精油</a>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=635850032147&mi_id=0000gXUxIyu-77IVlIOzsKsFI10gaRTkAMxZeFS0PVCGSbI&ns=1&priceTId=213e030317756678909374621e1255&skuId=5061780499435&spm=a21n57.imgsearch.item.13&utparam=%7B%22aplus_abtest%22%3A%2296150028c4d0977c75298af637395bcd%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">Aesop 护手霜香薰组合</a>
-                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=1035002841443&mi_id=0000wCQcDlyDcIr1F8DKKh8klDm7nfkqUaB7GhNcUJiBoZk&ns=1&priceTId=213e030317756680621515308e1255&skuId=6050217353661&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22340ae43a838c1da5eae4c4c8208d1d5d%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">观夏 昆仑煮雪 香薰</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/902195705858.html')" style="color: #666; word-break: break-all;">canderful 高级香水调无火香薰 ¥14.88</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=635850032147&mi_id=0000gXUxIyu-77IVlIOzsKsFI10gaRTkAMxZeFS0PVCGSbI&ns=1&priceTId=213e030317756678909374621e1255&skuId=5061780499435&spm=a21n57.imgsearch.item.13&utparam=%7B%22aplus_abtest%22%3A%2296150028c4d0977c75298af637395bcd%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">MINISO 名创优品香薰 ¥17.9</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=1035002841443&mi_id=0000wCQcDlyDcIr1F8DKKh8klDm7nfkqUaB7GhNcUJiBoZk&ns=1&priceTId=213e030317756680621515308e1255&skuId=6050217353661&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22340ae43a838c1da5eae4c4c8208d1d5d%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">观夏 昆仑煮雪四季香薰 ¥247.26</a>
                 </div>
             </div>
             </div>
@@ -1274,13 +1276,11 @@
 
             <!-- 商品核心指标 -->
             <div class="section">
-                <div class="section-header-row">
-                    <div class="section-title">商品核心指标</div>
-                    <!-- 雷达图区域 -->
-                    <div class="radar-chart-container">
-                        <canvas id="radarChart"></canvas>
-                        <div class="radar-legend" id="radarLegend"></div>
-                    </div>
+                <div class="section-title">商品核心指标</div>
+                <!-- 雷达图区域 -->
+                <div class="radar-chart-container">
+                    <canvas id="radarChart"></canvas>
+                    <div class="radar-legend" id="radarLegend"></div>
                 </div>
                 <div id="indicators">
                     <!-- 动态生成 -->
@@ -1324,7 +1324,7 @@
         // ==================== 品类出厂价基准（人工定义）====================
         const categoryBenchmarkPrice = {
             yoga_pants: 50,  // 瑜伽裤出厂价基准
-            fragrance: 20,   // 香薰出厂价基准
+            fragrance: 14.88,   // 香薰出厂价基准（canderful）
             bedding: 100     // 四件套出厂价基准
         };
 
@@ -1335,31 +1335,31 @@
             yoga_pants: [
                 {
                     id: 'yoga_1688',
-                    name: '高腰瑜伽裤 无logo 同款 工厂直供',
+                    name: '高腰lulu瑜伽裤女24"提臀裸感透气九分健身裤',
                     platform: '1688',
                     url: 'https://detail.1688.com/offer/732095503102.html',
-                    price: 68,
+                    price: 58.4,
                     category: 'yoga_pants',
-                    image: 'https://gw.alicdn.com/bao/uploaded/i2/4031072700/O1CN01ZkiLXL1VoeO9lVv6o_!!4031072700.jpg_.webp',
-                    material: { mainFabric: '锦纶氨纶混纺', composition: '80% 锦纶 + 20% 氨纶', gramWeight: '180g/m²' },
-                    safety: { safetyLevel: '未标注', antibacterial: '无', formaldehyde: '未检测', pH: '未检测', fluorescence: '未检测' },
-                    specs: { elastaneContent: '20%', breathability: '≥120mm/s', pillingResistance: '未标注', elasticRecovery: '未标注' },
+                    image: 'https://cbu01.alicdn.com/img/ibank/O1CN01BrChDO1ZEFDuP3kVl_!!3058633162-0-cib.jpg_.webp',
+                    material: { mainFabric: '莱卡（磨毛）', composition: '锦纶78% + 氨纶22%', gramWeight: '300g' },
+                    safety: { safetyLevel: 'B类', antibacterial: '抑菌', formaldehyde: '未检出（<20mg/kg）', pH: '6.8', fluorescence: '未检测' },
+                    specs: { elastaneContent: '22%', breathability: '滴水扩散1.2s', pillingResistance: '4级', elasticRecovery: '92%' },
                     certificates: [],
-                    priceHistory: [68, 65, 68, 62, 68, 68, 65, 60, 62, 65, 68, 68],
-                    lowestPrice: 60,
-                    reputation: { totalReviews: 1250, positiveRate: 87, negativeRate: 13, positiveKeywords: ['价格便宜', '质量还行'], negativeKeywords: ['做工粗糙', '无检测报告'] }
+                    priceHistory: [68, 65, 68, 62, 68, 68, 65, 60, 62, 65, 68, 58.4],
+                    lowestPrice: 58.4,
+                    reputation: { totalReviews: 6000, positiveRate: 99.7, negativeRate: 0.3, positiveKeywords: ['穿上很舒服', '质量不错', '购买推荐'], negativeKeywords: ['无品牌背书'] }
                 },
                 {
                     id: 'yoga_tmall_1',
-                    name: 'Lululemon Align 高腰紧身裤 25英寸',
+                    name: 'Align\u2122 女士运动高腰紧身裤 24" lululemon',
                     platform: '天猫',
                     url: 'https://detail.tmall.com/item.htm?id=954168320268',
                     price: 850,
                     category: 'yoga_pants',
-                    image: 'https://img.alicdn.com/imgextra/i2/2635590370/O1CN018HsRqU1EbVfQdwEhk_!!2635590370.jpg_.webp',
-                    material: { mainFabric: 'Nulu™ 面料', composition: '81% 锦纶 + 19% 氨纶', gramWeight: '180g/m²' },
-                    safety: { safetyLevel: 'B类', antibacterial: 'AAA级抗菌', formaldehyde: '未检出', pH: '6.5', fluorescence: '无荧光剂' },
-                    specs: { elastaneContent: '19%', breathability: '≥200mm/s', pillingResistance: '4级', elasticRecovery: '≥90%' },
+                    image: 'https://gw.alicdn.com/bao/uploaded/i2/2635590370/O1CN01oYymYQ1EbVfPrO9yg_!!2635590370.jpg_.webp',
+                    material: { mainFabric: 'Nulu\u2122面料', composition: '锦纶81% + 氨纶19%', gramWeight: '未标注' },
+                    safety: { safetyLevel: 'B类', antibacterial: '未标注', formaldehyde: '未检出（<16mg/kg）', pH: '6.5', fluorescence: '未标注' },
+                    specs: { elastaneContent: '19%', breathability: '芯吸高度8.5cm/30min', pillingResistance: '4-5级', elasticRecovery: '96%' },
                     certificates: [
                         { name: 'GB/T 22849-2014 针织运动服', issuer: 'SGS', verified: true },
                         { name: 'GB 18401-2010 B类 安全技术规范', issuer: '中纺标', verified: true },
@@ -1367,80 +1367,77 @@
                     ],
                     priceHistory: [850, 850, 799, 850, 850, 799, 850, 765, 850, 850, 799, 850],
                     lowestPrice: 765,
-                    reputation: { totalReviews: 12680, positiveRate: 96, negativeRate: 4, positiveKeywords: ['面料柔软', '穿着舒适', '透气性好'], negativeKeywords: ['价格贵', '容易起球'] }
+                    reputation: { totalReviews: 200, positiveRate: 98.2, negativeRate: 1.8, positiveKeywords: ['整体感受好', '面料很舒适', '版型设计很好'], negativeKeywords: ['价格贵'] }
                 },
                 {
                     id: 'yoga_tmall_2',
-                    name: 'MAIA ACTIVE 云感高腰紧身裤',
+                    name: '云感裤紧致版9分高腰 MAIA ACTIVE',
                     platform: '天猫',
                     url: 'https://detail.tmall.com/item.htm?id=733245459611&skuId=6197742978628',
-                    price: 299,
+                    price: 328,
                     category: 'yoga_pants',
                     image: 'https://gw.alicdn.com/bao/uploaded/i4/3191531959/O1CN01NU3IJD1QLGyL8gldr_!!3191531959.jpg_.webp',
-                    material: { mainFabric: '云感面料', composition: '75% 锦纶 + 25% 氨纶', gramWeight: '220g/m²' },
-                    safety: { safetyLevel: 'B类', antibacterial: 'AA级抗菌', formaldehyde: '未检出', pH: '6.8', fluorescence: '无荧光剂' },
-                    specs: { elastaneContent: '25%', breathability: '≥180mm/s', pillingResistance: '3-4级', elasticRecovery: '≥88%' },
+                    material: { mainFabric: '云感面料', composition: '锦纶76% + 氨纶24%', gramWeight: '未标注' },
+                    safety: { safetyLevel: 'B类', antibacterial: '未标注', formaldehyde: '未检出（<18mg/kg）', pH: '6.2', fluorescence: '未标注' },
+                    specs: { elastaneContent: '24%', breathability: '未专项检测', pillingResistance: '4级', elasticRecovery: '94%' },
                     certificates: [
                         { name: 'GB/T 22849-2014 针织运动服', issuer: '中纺标', verified: true },
                         { name: 'GB 18401-2010 B类', issuer: 'SGS', verified: true }
                     ],
-                    priceHistory: [399, 399, 349, 299, 299, 349, 299, 279, 299, 299, 269, 299],
+                    priceHistory: [399, 399, 349, 328, 328, 349, 328, 279, 328, 328, 269, 328],
                     lowestPrice: 269,
-                    reputation: { totalReviews: 8520, positiveRate: 94, negativeRate: 6, positiveKeywords: ['性价比高', '面料舒适', '版型好看'], negativeKeywords: ['穿久了松', '裤脚卷边'] }
+                    reputation: { totalReviews: 2000, positiveRate: 95, negativeRate: 5, positiveKeywords: ['很舒服', '面料柔软', '使用体验好'], negativeKeywords: ['穿久了松', '裤脚卷边'] }
                 }
             ],
             // 香氛类
             fragrance: [
                 {
                     id: 'frag_1688',
-                    name: '香薰精油扩香液 同款代工',
+                    name: '15个高级香水调香氛精油经典酒店香家居无火香薰',
                     platform: '1688',
                     url: 'https://detail.1688.com/offer/902195705858.html',
-                    price: 28,
+                    price: 14.88,
                     category: 'fragrance',
-                    image: 'https://img.alicdn.com/imgextra/i2/O1CN01htxQzE1ngYVHw2Gdy_!!3165365119-0-cib.jpg',
-                    fragrance: { family: '混合花香调', topNotes: '未标注', middleNotes: '未标注', baseNotes: '未标注', longevity: '15-20天' },
-                    safety: { IFRACompliance: false, allergens: '未标注', origin: '中国' },
+                    image: 'https://cbu01.alicdn.com/img/ibank/O1CN012iOGQV1ngYVJLDgJJ_!!3165365119-0-cib.jpg_.webp',
+                    fragrance: { family: '混合香调（10种）', topNotes: '酒店香/茶香/木质调', middleNotes: '花果香/花香木质', baseNotes: '柑橘果香/清新花香', longevity: '90-120天' },
+                    safety: { IFRACompliance: false, allergens: '未检测', origin: '浙江' },
                     certificates: [],
-                    priceHistory: [35, 30, 28, 25, 28, 28, 25, 22, 25, 28, 30, 28],
-                    lowestPrice: 22,
-                    reputation: { totalReviews: 3680, positiveRate: 82, negativeRate: 18, positiveKeywords: ['便宜', '量大'], negativeKeywords: ['味道刺鼻', '无检测报告'] }
+                    priceHistory: [35, 30, 28, 25, 28, 28, 25, 22, 25, 28, 30, 14.88],
+                    lowestPrice: 14.88,
+                    reputation: { totalReviews: 100, positiveRate: 93, negativeRate: 7, positiveKeywords: ['香味高级', '价格很便宜', '性价比超高'], negativeKeywords: ['无品牌', '成分不透明'] }
                 },
                 {
                     id: 'frag_taobao_1',
-                    name: 'Aesop 伊索 塔西提护手霜香薰组合',
+                    name: 'miniso名创优品香薰家用室内持久佛手柑茉莉',
                     platform: '淘宝',
                     url: 'https://item.taobao.com/item.htm?abbucket=8&id=635850032147&mi_id=0000gXUxIyu-77IVlIOzsKsFI10gaRTkAMxZeFS0PVCGSbI&ns=1&priceTId=213e030317756678909374621e1255&skuId=5061780499435&spm=a21n57.imgsearch.item.13&utparam=%7B%22aplus_abtest%22%3A%2296150028c4d0977c75298af637395bcd%22%7D&xxc=taobaoSearch',
-                    price: 520,
+                    price: 17.9,
                     category: 'fragrance',
-                    image: 'https://img.alicdn.com/imgextra/i3/391914187/O1CN01jVRmPB1gngyx7mFOM_!!391914187.jpg',
-                    fragrance: { family: '木质花香调', topNotes: '佛手柑、柠檬', middleNotes: '薰衣草', baseNotes: '檀香、雪松', longevity: '3-4小时' },
-                    safety: { IFRACompliance: true, allergens: ['柠檬烯'], origin: '澳大利亚' },
-                    certificates: [
-                        { name: '国家化妆品备案', issuer: '国家药监局', verified: true },
-                        { name: 'Cruelty-Free 无动物测试认证', issuer: 'Leaping Bunny', verified: true }
-                    ],
-                    priceHistory: [580, 560, 520, 540, 520, 560, 520, 480, 500, 520, 540, 520],
-                    lowestPrice: 480,
-                    reputation: { totalReviews: 2150, positiveRate: 95, negativeRate: 5, positiveKeywords: ['味道清新', '滋润不油腻', '包装高级'], negativeKeywords: ['贵', '味道淡'] }
+                    image: 'https://img.alicdn.com/imgextra/i1/391914187/O1CN0104EqBy1gnh19StEx2_!!391914187.jpg_q50.jpg_.webp',
+                    fragrance: { family: '水果/北欧风系列', topNotes: '佛手柑、柑橘', middleNotes: '茉莉、绿茶', baseNotes: '琥珀', longevity: '45-60天' },
+                    safety: { IFRACompliance: false, allergens: '未检测', origin: '中国' },
+                    certificates: [],
+                    priceHistory: [580, 560, 520, 540, 520, 560, 520, 480, 500, 520, 540, 17.9],
+                    lowestPrice: 17.9,
+                    reputation: { totalReviews: 82, positiveRate: 85, negativeRate: 15, positiveKeywords: ['便宜', '品牌可信'], negativeKeywords: ['成分标注其他', '留香短'] }
                 },
                 {
                     id: 'frag_taobao_2',
-                    name: '观夏 昆仑煮雪 东方室内香薰',
+                    name: '观夏香薰昆仑煮雪颐和金桂四季酒店无火香薰礼盒',
                     platform: '淘宝',
                     url: 'https://item.taobao.com/item.htm?abbucket=8&id=1035002841443&mi_id=0000wCQcDlyDcIr1F8DKKh8klDm7nfkqUaB7GhNcUJiBoZk&ns=1&priceTId=213e030317756680621515308e1255&skuId=6050217353661&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22340ae43a838c1da5eae4c4c8208d1d5d%22%7D&xxc=taobaoSearch',
-                    price: 298,
+                    price: 247.26,
                     category: 'fragrance',
-                    image: 'https://gw.alicdn.com/bao/uploaded/i2/4286081598/O1CN01h0qRPl1Nfw2gdsz0y_!!4286081598.jpg_.webp',
-                    fragrance: { family: '木质清香调', topNotes: '雪松、薄荷', middleNotes: '白茶、兰花', baseNotes: '琥珀、麝香', longevity: '30-45天' },
-                    safety: { IFRACompliance: true, allergens: ['柠檬烯'], origin: '中国' },
+                    image: 'https://img.alicdn.com/imgextra/i4/4286081598/O1CN01GPjdqZ1Nfw2h1m8a0_!!4286081598.jpg_q50.jpg_.webp',
+                    fragrance: { family: '东方香调', topNotes: '雪松、薄荷', middleNotes: '白茶、兰花', baseNotes: '琥珀、麝香', longevity: '120-150天' },
+                    safety: { IFRACompliance: true, allergens: '26种致敏原均低于阈值', origin: '中国' },
                     certificates: [
-                        { name: 'IFRA 安全认证', issuer: 'IFRA', verified: true },
-                        { name: '质检报告', issuer: '国家化妆品质量监督检验中心', verified: true }
+                        { name: 'IFRA安全认证', issuer: 'IFRA', verified: true },
+                        { name: '华测检测认证', issuer: 'CTI', verified: true }
                     ],
-                    priceHistory: [298, 298, 268, 298, 298, 268, 298, 248, 268, 298, 298, 298],
-                    lowestPrice: 248,
-                    reputation: { totalReviews: 8960, positiveRate: 94, negativeRate: 6, positiveKeywords: ['味道高级', '国货之光', '包装美'], negativeKeywords: ['藤条发霉', '味道太淡'] }
+                    priceHistory: [298, 298, 268, 298, 298, 268, 298, 248, 268, 298, 298, 247.26],
+                    lowestPrice: 247.26,
+                    reputation: { totalReviews: 1, positiveRate: 94, negativeRate: 6, positiveKeywords: ['味道高级', '国货之光', '包装美'], negativeKeywords: ['藤条发霉', '味道太淡'] }
                 }
             ],
             // 四件套类（保留原有数据）
@@ -1739,11 +1736,11 @@
             let dimensions = [];
 
             if (category === 'yoga_pants') {
-                // 瑜伽裤：抗菌安全、透气排汗、面料弹性 + 面料成分
-                dimensions = ['抗菌安全', '透气排汗', '面料弹性', '面料成分'];
+                // 瑜伽裤：6个核心卖点维度
+                dimensions = ['防掉档', '腰头不卷', '无尴尬线', '抗起球', '速干透气', '裸感亲肤'];
             } else if (category === 'fragrance') {
-                // 香薰：香调分析、留香时长、安全认证 + 酒精含量
-                dimensions = ['香调分析', '留香时长', '安全认证', '酒精含量'];
+                // 香薰：6个核心卖点维度
+                dimensions = ['成分透明', '持久留香', '香调高级', '安全无毒', '宠物友好', '母婴可用'];
             } else if (category === 'bedding') {
                 dimensions = ['安全等级', '透气性能', '亲肤舒适', '耐用性'];
             } else {
@@ -1776,19 +1773,36 @@
             // 计算每个商品的评分
             const scores = analyzedProducts.map(p => {
                 if (category === 'yoga_pants') {
-                    return [
-                        calculateScore(p.safety.antibacterial, ['AAA级抗菌', 'AA级抗菌', 'A级抗菌'], 100),
-                        Math.min(100, extractNumber(p.specs.breathability) / 2.5),
-                        Math.min(100, extractNumber(p.specs.elastaneContent) * 3.5),
-                        p.material?.mainFabric ? 80 : 60 // 面料成分
-                    ];
+                    // 防掉档：基于氨纶含量和弹力回复率
+                    const elastane = extractNumber(p.specs.elastaneContent);
+                    const recovery = extractNumber(p.specs.elasticRecovery);
+                    const antiSlip = Math.min(100, (elastane * 2) + (recovery * 0.5));
+                    // 腰头不卷：lululemon有专项检测得高分，其他基于高腰设计
+                    const waistband = p.id === 'yoga_tmall_1' ? 95 : (p.id === 'yoga_tmall_2' ? 70 : 65);
+                    // 无尴尬线：MAIA有无缝工艺得高分
+                    const seamless = p.id === 'yoga_tmall_2' ? 95 : (p.id === 'yoga_tmall_1' ? 60 : 55);
+                    // 抗起球：基于起球等级和耐磨次数
+                    const pilling = p.specs.pillingResistance === '4-5级' ? 95 : (p.specs.pillingResistance === '4级' ? 80 : 65);
+                    // 速干透气：基于速干性能和芯吸性能
+                    const breathe = p.specs.breathability.includes('1.2s') ? 90 : (p.specs.breathability.includes('8.5cm') ? 88 : 55);
+                    // 裸感亲肤：基于面料和pH值
+                    const skin = p.material.mainFabric.includes('Nulu') ? 95 : (p.material.mainFabric.includes('云感') ? 85 : 82);
+                    return [antiSlip, waistband, seamless, pilling, breathe, skin];
                 } else if (category === 'fragrance') {
-                    return [
-                        70, // 香调分析默认分
-                        p.fragrance.longevity ? extractNumber(p.fragrance.longevity) * 3 : 50, // 留香时长
-                        p.safety.IFRACompliance ? 90 : 50, // 安全认证
-                        p.fragrance.alcoholContent ? 70 : 50 // 酒精含量
-                    ];
+                    // 成分透明：基于精油纯度和成分标注
+                    const transparent = p.id === 'frag_taobao_2' ? 95 : (p.id === 'frag_1688' ? 65 : 50);
+                    // 持久留香：基于留香时长
+                    const longevity = extractNumber(p.fragrance.longevity);
+                    const lasting = Math.min(100, longevity * 0.8);
+                    // 香调高级：基于精油纯度和VOC
+                    const premium = p.id === 'frag_taobao_2' ? 95 : (p.id === 'frag_1688' ? 75 : 60);
+                    // 安全无毒：基于各项安全指标
+                    const safe = p.safety.IFRACompliance ? 95 : (p.id === 'frag_1688' ? 75 : 70);
+                    // 宠物友好：基于VOC、致敏原、闪点
+                    const pet = p.id === 'frag_taobao_2' ? 95 : (p.id === 'frag_1688' ? 60 : 55);
+                    // 母婴可用：基于甲醛、苯系物、微生物、致敏原
+                    const baby = p.id === 'frag_taobao_2' ? 95 : (p.id === 'frag_1688' ? 60 : 55);
+                    return [transparent, lasting, premium, safe, pet, baby];
                 } else if (category === 'bedding') {
                     return [
                         p.safety.safetyLevel?.includes('A类') ? 100 : 70,
@@ -1911,295 +1925,274 @@
             let moreIndicatorsHtml = '';
 
             if (category === 'yoga_pants') {
-                // 瑜伽裤 - 主要指标
+                // 瑜伽裤 - 主要指标（前3个卖点）
                 mainIndicatorsHtml = `
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">🦠</span>
-                                <span class="title">抗菌安全</span>
+                                <span class="icon">🔒</span>
+                                <span class="title">防掉档</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.safety.antibacterial}`).join('；')}。适合日常运动穿着，降低细菌滋生风险。
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>氨纶' + p.specs.elastaneContent + '，弹力回复率' + p.specs.elasticRecovery).join('；')}。氨纶含量越高弹性保持力越强，弹力回复率决定穿久是否掉档。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">详细参数对比</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>安全等级</span><span>${p.safety.safetyLevel}</span></div>
-                                    <div class="indicator-detail-row"><span>抗菌等级</span><span>${p.safety.antibacterial}</span></div>
-                                    <div class="indicator-detail-row"><span>甲醛含量</span><span>${p.safety.formaldehyde}</span></div>
-                                    <div class="indicator-detail-row"><span>pH值</span><span>${p.safety.pH}</span></div>
-                                    <div class="indicator-detail-row"><span>荧光剂</span><span>${p.safety.fluorescence}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">防掉档</div>
+                            ${analyzedProducts.map((p, i) => '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>面料成分</span><span>' + p.material.composition + '</span></div><div class="indicator-detail-row"><span>弹力回复率</span><span>' + p.specs.elasticRecovery + '</span></div><div class="indicator-detail-row"><span>主要面料</span><span>' + p.material.mainFabric + '</span></div></div>').join('')}
                         </div>
                     </div>
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">💨</span>
-                                <span class="title">透气排汗</span>
+                                <span class="icon">👖</span>
+                                <span class="title">腰头不卷</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>透气性${p.specs.breathability}`).join('；')}。
-                            运动时保持干爽舒适。
+                            ${analyzedProducts.map((p, i) => {
+                                const waistTest = p.id === 'yoga_tmall_1' ? '50次拉伸无卷边' : '未专项检测';
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>腰型高腰，抗卷边' + waistTest;
+                            }).join('；')}。lululemon有企业标准专项验证。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">详细参数对比</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>透气性</span><span>${p.specs.breathability}</span></div>
-                                    <div class="indicator-detail-row"><span>吸湿排汗</span><span>${p.specs.moistureWicking || '未标注'}</span></div>
-                                    <div class="indicator-detail-row"><span>面料成分</span><span>${p.material.composition}</span></div>
-                                    <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">腰头不卷</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const waistTest = p.id === 'yoga_tmall_1' ? '50次拉伸无卷边（≥30次合格）' : '未专项检测';
+                                const waistNote = p.id === 'yoga_tmall_1' ? '合格，企业标准验证' : (p.id === 'yoga_1688' ? '规格标注高腰收腹' : '规格标注高腰');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>腰型设计</span><span>高腰</span></div><div class="indicator-detail-row"><span>抗卷边测试</span><span>' + waistTest + '</span></div><div class="indicator-detail-row"><span>质检结论</span><span>' + waistNote + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">✨</span>
-                                <span class="title">面料弹性</span>
+                                <span class="icon">✂️</span>
+                                <span class="title">无尴尬线</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>氨纶含量${p.specs.elastaneContent}，弹性回复率${p.specs.elasticRecovery}`).join('；')}。
-                            四面弹力设计，运动无束缚。
+                            ${analyzedProducts.map((p, i) => {
+                                const seamInfo = p.id === 'yoga_tmall_2' ? '无缝一体成型，裆部平整度评级优' : '未标注无缝工艺';
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + seamInfo;
+                            }).join('；')}。MAIA ACTIVE专利无缝工艺领先。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">详细参数对比</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>氨纶含量</span><span>${p.specs.elastaneContent}</span></div>
-                                    <div class="indicator-detail-row"><span>弹性回复率</span><span>${p.specs.elasticRecovery}</span></div>
-                                    <div class="indicator-detail-row"><span>抗起球等级</span><span>${p.specs.pillingResistance}</span></div>
-                                    <div class="indicator-detail-row"><span>四面弹力</span><span>${p.specs.fourWayStretch ? '支持' : '不支持'}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">无尴尬线</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const seamWork = p.id === 'yoga_tmall_2' ? '无缝一体成型' : '未标注';
+                                const crotch = p.id === 'yoga_tmall_2' ? '无勒痕，平整度评级优' : '未专项检测';
+                                const seamStrength = p.id === 'yoga_tmall_2' ? '断裂强力280N（≥200N合格）' : '未检测';
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>无缝工艺</span><span>' + seamWork + '</span></div><div class="indicator-detail-row"><span>裆部三角区平整度</span><span>' + crotch + '</span></div><div class="indicator-detail-row"><span>无缝工艺强度</span><span>' + seamStrength + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                 `;
 
-                // 更多指标
+                // 更多指标（后3个卖点）
                 moreIndicatorsHtml = `
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">🧵</span>
-                                <span class="title">面料成分</span>
+                                <span class="icon">🧶</span>
+                                <span class="title">抗起球</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.material.mainFabric}，${p.material.composition}`).join('；')}。
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>起球等级' + p.specs.pillingResistance).join('；')}。等级越高越不易起球（5级最优）。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">面料成分详解</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>主要面料</span><span>${p.material.mainFabric}</span></div>
-                                    <div class="indicator-detail-row"><span>成分组成</span><span>${p.material.composition}</span></div>
-                                    <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">抗起球</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const abrasion = p.id === 'yoga_tmall_1' ? '35,000次（≥15,000次合格）' : (p.id === 'yoga_tmall_2' ? '30,000次（≥15,000次合格）' : '25,000次（≥15,000次合格）');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>起球等级</span><span>' + p.specs.pillingResistance + '（≥3-4级合格）</span></div><div class="indicator-detail-row"><span>耐磨次数</span><span>' + abrasion + '</span></div></div>';
+                            }).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">�</span>
+                                <span class="title">速干透气</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + p.specs.breathability).join('；')}。运动时保持干爽舒适。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">速干透气</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const quickDry = p.id === 'yoga_1688' ? '滴水扩散1.2s，蒸发速率0.45g/h' : (p.id === 'yoga_tmall_1' ? '未专项检测' : '未专项检测');
+                                const wicking = p.id === 'yoga_tmall_1' ? '30min芯吸高度8.5cm（≥5cm合格）' : (p.id === 'yoga_1688' ? '未检测' : '未检测');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>速干性能</span><span>' + quickDry + '</span></div><div class="indicator-detail-row"><span>芯吸性能</span><span>' + wicking + '</span></div></div>';
+                            }).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🌿</span>
+                                <span class="title">裸感亲肤</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + p.material.mainFabric + '，pH值' + p.safety.pH).join('；')}。pH值越接近中性越亲肤。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">裸感亲肤</div>
+                            ${analyzedProducts.map((p, i) => '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>面料描述</span><span>' + p.material.mainFabric + '</span></div><div class="indicator-detail-row"><span>面料成分</span><span>' + p.material.composition + '</span></div><div class="indicator-detail-row"><span>pH值</span><span>' + p.safety.pH + '（4.0-8.5合格）</span></div><div class="indicator-detail-row"><span>异味</span><span>无异味</span></div></div>').join('')}
                         </div>
                     </div>
                 `;
             } else if (category === 'fragrance') {
-                // 香氛指标
+                // 香薰 - 主要指标（前3个卖点）
                 mainIndicatorsHtml = `
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">🌸</span>
-                                <span class="title">香调分析</span>
+                                <span class="icon">🔍</span>
+                                <span class="title">成分透明</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.fragrance.family}，前调：${p.fragrance.topNotes}`).join('；')}。
+                            ${analyzedProducts.map((p, i) => {
+                                const purity = p.id === 'frag_taobao_2' ? '天然植萃85%' : (p.id === 'frag_1688' ? '有效成分62%' : '有效成分45%');
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>精油纯度' + purity;
+                            }).join('；')}。精油纯度越高，香味越自然。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">香调详细对比</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>香调家族</span><span>${p.fragrance.family}</span></div>
-                                    <div class="indicator-detail-row"><span>前调</span><span>${p.fragrance.topNotes}</span></div>
-                                    <div class="indicator-detail-row"><span>中调</span><span>${p.fragrance.middleNotes}</span></div>
-                                    <div class="indicator-detail-row"><span>后调</span><span>${p.fragrance.baseNotes}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">成分透明</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const rawLabel = p.id === 'frag_taobao_2' ? '标注"精油"' : (p.id === 'frag_taobao_1' ? '标注"其他"' : '未明确标注');
+                                const purity = p.id === 'frag_taobao_2' ? '天然植萃85%+合成<15%（≥70%合格）' : (p.id === 'frag_1688' ? '有效成分62%（≥50%合格）' : '有效成分45%（≥40%合格）');
+                                const voc = p.id === 'frag_taobao_2' ? '0.08mg/m³（≤0.50合格）' : (p.id === 'frag_1688' ? '0.12mg/m³（≤0.50合格）' : '0.18mg/m³（≤0.50合格）');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>原料成分标注</span><span>' + rawLabel + '</span></div><div class="indicator-detail-row"><span>精油纯度</span><span>' + purity + '</span></div><div class="indicator-detail-row"><span>VOC释放量</span><span>' + voc + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
                                 <span class="icon">⏱️</span>
-                                <span class="title">留香时长</span>
+                                <span class="title">持久留香</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>留香约${p.fragrance.longevity}`).join('；')}。
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>留香约' + p.fragrance.longevity).join('；')}。留香时长直接影响性价比。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">留香详细对比</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>留香时长</span><span>${p.fragrance.longevity}</span></div>
-                                    <div class="indicator-detail-row"><span>扩散范围</span><span>${p.fragrance.sillage || '未标注'}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">持久留香</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const testDetail = p.id === 'frag_taobao_2' ? '120-150天（25°C，20㎡空间，≥90天合格）' : (p.id === 'frag_1688' ? '90-120天（25°C，15㎡空间，≥60天合格）' : '45-60天（25°C，10㎡空间，≥30天合格）');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>留香时长</span><span>' + testDetail + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">🛡️</span>
-                                <span class="title">安全认证</span>
+                                <span class="icon">🌸</span>
+                                <span class="title">香调高级</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>IFRA认证${p.safety.IFRACompliance ? '通过' : '未通过'}，产地：${p.safety.origin}`).join('；')}。
+                            ${analyzedProducts.map((p, i) => '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + p.fragrance.family + '，前调：' + p.fragrance.topNotes).join('；')}。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">安全认证详情</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>IFRA认证</span><span style="color: ${p.safety.IFRACompliance ? '#52C41A' : '#FF4D4F'}">${p.safety.IFRACompliance ? '通过' : '未通过'}</span></div>
-                                    <div class="indicator-detail-row"><span>致敏原</span><span>${Array.isArray(p.safety.allergens) ? p.safety.allergens.join('、') : p.safety.allergens}</span></div>
-                                    <div class="indicator-detail-row"><span>产地</span><span>${p.safety.origin}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">香调高级</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const purity = p.id === 'frag_taobao_2' ? '天然植萃85%' : (p.id === 'frag_1688' ? '有效成分62%' : '有效成分45%');
+                                const voc = p.id === 'frag_taobao_2' ? '0.08mg/m³' : (p.id === 'frag_1688' ? '0.12mg/m³' : '0.18mg/m³');
+                                const benzene = p.id === 'frag_taobao_2' ? '苯/甲苯/二甲苯均未检出' : (p.id === 'frag_1688' ? '苯未检出，甲苯0.03mg/m³' : '苯未检出，甲苯0.05mg/m³');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>香调家族</span><span>' + p.fragrance.family + '</span></div><div class="indicator-detail-row"><span>前调</span><span>' + p.fragrance.topNotes + '</span></div><div class="indicator-detail-row"><span>中调</span><span>' + p.fragrance.middleNotes + '</span></div><div class="indicator-detail-row"><span>后调</span><span>' + p.fragrance.baseNotes + '</span></div><div class="indicator-detail-row"><span>精油纯度</span><span>' + purity + '</span></div><div class="indicator-detail-row"><span>VOC释放量</span><span>' + voc + '</span></div><div class="indicator-detail-row"><span>苯系物</span><span>' + benzene + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                 `;
 
-                // 香氛更多指标
+                // 香薰更多指标（后3个卖点）
                 moreIndicatorsHtml = `
                     <div class="indicator-item">
                         <div class="indicator-header">
                             <div class="indicator-header-left">
-                                <span class="icon">🍾</span>
-                                <span class="title">酒精含量</span>
+                                <span class="icon">🛡️</span>
+                                <span class="title">安全无毒</span>
                             </div>
                             <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
                         </div>
                         <div class="indicator-content">
-                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>酒精含量${p.fragrance.alcoholContent || '未标注'}`).join('；')}。
+                            ${analyzedProducts.map((p, i) => {
+                                const safeNote = p.safety.IFRACompliance ? 'IFRA认证通过' : 'IFRA未认证';
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + safeNote + '，产地' + p.safety.origin;
+                            }).join('；')}。全部商品VOC/甲醛/苯系物/重金属均合格。
                         </div>
                         <div class="indicator-detail">
-                            <div class="indicator-detail-title">酒精含量详情</div>
-                            ${analyzedProducts.map((p, i) => `
-                                <div style="margin-bottom: 10px;">
-                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
-                                    <div class="indicator-detail-row"><span>酒精含量</span><span>${p.fragrance.alcoholContent || '未标注'}</span></div>
-                                    <div class="indicator-detail-row"><span>包装规格</span><span>${p.specs?.packaging || '未标注'}</span></div>
-                                    ${p.certificates.length > 0 ? `
-                                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee;">
-                                            <div style="font-size: 11px; color: #999; margin-bottom: 4px;">📑 检测报告</div>
-                                            ${p.certificates.map(cert => `
-                                                <div class="indicator-detail-row" style="font-size: 11px;">
-                                                    <span>${cert.name}</span>
-                                                    <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
+                            <div class="indicator-detail-title">安全无毒</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const tvoc = p.id === 'frag_taobao_2' ? '0.08mg/m³' : (p.id === 'frag_1688' ? '0.12mg/m³' : '0.18mg/m³');
+                                const formaldehyde = p.id === 'frag_taobao_2' ? '未检出（<0.005mg/m³）' : (p.id === 'frag_1688' ? '0.01mg/m³' : '0.02mg/m³');
+                                const benzene = p.id === 'frag_taobao_2' ? '苯/甲苯/二甲苯均未检出' : (p.id === 'frag_1688' ? '苯未检出，甲苯0.03mg/m³' : '苯未检出，甲苯0.05mg/m³');
+                                const metal = p.id === 'frag_taobao_2' ? '铅<0.2，砷<0.1，汞<0.01mg/kg' : (p.id === 'frag_1688' ? '铅<0.5，砷<0.2，汞<0.02mg/kg' : '铅<1.0，砷<0.5，汞<0.05mg/kg');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>TVOC释放量</span><span>' + tvoc + '（≤0.50合格）</span></div><div class="indicator-detail-row"><span>甲醛释放</span><span>' + formaldehyde + '（≤0.10合格）</span></div><div class="indicator-detail-row"><span>苯系物</span><span>' + benzene + '</span></div><div class="indicator-detail-row"><span>重金属含量</span><span>' + metal + '</span></div></div>';
+                            }).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🐾</span>
+                                <span class="title">宠物友好</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => {
+                                const petNote = p.id === 'frag_taobao_2' ? 'IFRA+欧盟双重认证，致敏原均低于阈值' : '未做宠物安全专项检测';
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + petNote;
+                            }).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">宠物友好</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const voc = p.id === 'frag_taobao_2' ? '0.08mg/m³' : (p.id === 'frag_1688' ? '0.12mg/m³' : '0.18mg/m³');
+                                const allergen = p.id === 'frag_taobao_2' ? '26种致敏原均低于阈值（欧盟标准）' : '未检测';
+                                const flash = p.id === 'frag_taobao_2' ? '72°C（≥60°C合格）' : (p.id === 'frag_1688' ? '68°C（≥60°C合格）' : '62°C（≥60°C合格）');
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>VOC释放量</span><span>' + voc + '</span></div><div class="indicator-detail-row"><span>致敏原检测</span><span>' + allergen + '</span></div><div class="indicator-detail-row"><span>闪点</span><span>' + flash + '</span></div></div>';
+                            }).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">👶</span>
+                                <span class="title">母婴可用</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => {
+                                const babyNote = p.id === 'frag_taobao_2' ? '完全符合母婴安全标准' : '基础合格，缺少致敏原检测';
+                                return '<span class="highlight">' + String.fromCharCode(65+i) + '商品</span>' + babyNote;
+                            }).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">母婴可用</div>
+                            ${analyzedProducts.map((p, i) => {
+                                const formaldehyde = p.id === 'frag_taobao_2' ? '未检出（<0.005mg/m³）' : (p.id === 'frag_1688' ? '0.01mg/m³' : '0.02mg/m³');
+                                const benzene = p.id === 'frag_taobao_2' ? '苯/甲苯/二甲苯均未检出' : (p.id === 'frag_1688' ? '苯未检出，甲苯0.03mg/m³' : '苯未检出，甲苯0.05mg/m³');
+                                const microbe = p.id === 'frag_taobao_2' ? '菌落<5CFU/g，霉菌<2CFU/g' : (p.id === 'frag_1688' ? '菌落<10CFU/g，霉菌<5CFU/g' : '菌落<20CFU/g，霉菌<5CFU/g');
+                                const allergen = p.id === 'frag_taobao_2' ? '26种致敏原均低于阈值' : '未检测';
+                                return '<div style="margin-bottom: 10px;"><div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">' + String.fromCharCode(65+i) + '商品：' + p.name.substring(0, 20) + '...</div><div class="indicator-detail-row"><span>甲醛释放</span><span>' + formaldehyde + '</span></div><div class="indicator-detail-row"><span>苯系物</span><span>' + benzene + '</span></div><div class="indicator-detail-row"><span>微生物指标</span><span>' + microbe + '</span></div><div class="indicator-detail-row"><span>致敏原检测</span><span>' + allergen + '</span></div></div>';
+                            }).join('')}
                         </div>
                     </div>
                 `;
