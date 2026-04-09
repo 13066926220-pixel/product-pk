@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>商品参数PK台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #7B5CFF;
+            --primary-light: #F3EFFF;
+            --text-primary: #1A1A1A;
+            --text-secondary: #666666;
+            --text-hint: #999999;
+            --bg-gray: #F5F5F5;
+            --border-color: #E5E5E5;
+            --success-color: #52C41A;
+            --warning-color: #FA8C16;
+            --danger-color: #FF4D4F;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+            background: #333;
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 移动端容器 */
+        .mobile-wrapper {
+            width: 100%;
+            max-width: 414px;
+            min-height: 100vh;
+            background: #fff;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 414px) {
+            body {
+                background: #fff;
+            }
+            .mobile-wrapper {
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
+
+        /* 页面容器 */
+        .page {
+            display: none;
+            min-height: 100vh;
+            background: #fff;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* 页面一：商品添加 */
+        .page-one {
+            padding: 20px 16px;
+            padding-bottom: 100px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .page-header .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 表单区块 */
+        .form-section {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .form-label .required {
+            color: var(--danger-color);
+        }
+
+        .form-label .optional {
+            font-size: 12px;
+            color: var(--text-hint);
+            font-weight: normal;
+        }
+
+        .platform-tags {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-hint);
+        }
+
+        .platform-tag {
+            padding: 4px 8px;
+            background: var(--bg-gray);
+            border-radius: 4px;
+        }
+
+        .help-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--text-hint);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 商品输入项 */
+        .product-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-input-item {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 14px;
+            position: relative;
+        }
+
+        .product-input-item.has-value {
+            background: #fff;
+            border: 1px solid var(--primary-color);
+        }
+
+        .product-input-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .product-input-header .tag {
+            font-size: 12px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .product-input-header .remove-btn {
+            margin-left: auto;
+            width: 20px;
+            height: 20px;
+            background: var(--text-hint);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-input-content {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .product-input-content input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .product-input-content input::placeholder {
+            color: var(--text-hint);
+        }
+
+        .product-input-content .paste-btn {
+            padding: 6px 12px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* 已解析的商品卡片 */
+        .product-card {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        .product-card .img {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: var(--bg-gray);
+        }
+
+        .product-card .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .product-card .name {
+            font-size: 13px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .product-card .meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .product-card .platform {
+            color: var(--text-hint);
+        }
+
+        .product-card .price {
+            color: var(--danger-color);
+            font-weight: 500;
+        }
+
+        /* 添加更多按钮 */
+        .add-more-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            color: var(--primary-color);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* 分析角度输入 */
+        .analysis-input {
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-gray);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            resize: none;
+            outline: none;
+            min-height: 80px;
+        }
+
+        .analysis-input::placeholder {
+            color: var(--text-hint);
+        }
+
+        /* 底部按钮 */
+        .bottom-action {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-hint);
+        }
+
+        /* 页面二：PK报告 */
+        .page-two {
+            padding-bottom: 80px;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #7B5CFF 0%, #9D7FFF 100%);
+            padding: 20px 16px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .report-header h2 {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .report-header .slogan {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* 统计条 */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-block {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-num {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-hint);
+            margin-top: 4px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: var(--border-color);
+            margin: 0 30px;
+        }
+
+        /* 报告内容 */
+        .report-content {
+            padding: 16px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        /* 商品对比卡片 */
+        .compare-cards {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .compare-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .compare-card {
+            flex: 0 0 140px;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .compare-card .img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #fff;
+            margin: 0 auto 8px;
+        }
+
+        .compare-card .name {
+            font-size: 12px;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .compare-card .price {
+            font-size: 14px;
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        /* 指标对比 */
+        .indicator-item {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .indicator-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .indicator-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .indicator-header .icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .indicator-header .title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .indicator-header .detail-btn {
+            font-size: 12px;
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .indicator-content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .indicator-content .highlight {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .indicator-detail {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: #fff;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .indicator-detail.show {
+            display: block;
+        }
+
+        .indicator-detail-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .indicator-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .indicator-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .show-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-gray);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .show-more-btn.expanded {
+            margin-bottom: 12px;
+        }
+
+        /* 更多指标（默认隐藏） */
+        .more-indicators {
+            display: none;
+        }
+
+        .more-indicators.show {
+            display: block;
+        }
+
+        /* 价格对比卡片 */
+        .price-compare-cards {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .price-card-item {
+            flex: 1;
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .price-card-item .product-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .price-card-item .current-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--danger-color);
+        }
+
+        .price-card-item .lowest-price {
+            font-size: 12px;
+            color: var(--text-hint);
+            margin-top: 4px;
+        }
+
+        .price-card-item .premium-tag {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: #FFF5F5;
+            color: var(--danger-color);
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        /* 价格波动图 */
+        .price-chart-card {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .price-chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .price-chart-header .title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .price-chart-header .badge {
+            padding: 4px 8px;
+            background: var(--success-color);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        /* 折线图容器 */
+        .line-chart-container {
+            position: relative;
+            height: 140px;
+            margin-bottom: 12px;
+        }
+
+        .line-chart-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        /* 价格提示框 */
+        .price-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .price-tooltip .tooltip-date {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .price-tooltip .tooltip-prices {
+            font-weight: 500;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .chart-date-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-hint);
+            margin-top: 8px;
+            padding: 0 10px;
+        }
+
+        .chart-date-range .date-item {
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .chart-date-range .date-item:hover {
+            background: var(--bg-gray);
+            color: var(--text-primary);
+        }
+
+        .chart-date-range .hint {
+            color: var(--text-hint);
+            font-size: 10px;
+        }
+
+        .price-compare-cards {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .price-compare-cards .price-card {
+            flex: 1;
+            background: var(--bg-gray);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .price-compare-cards .price-card .product-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .price-compare-cards .price-card .current-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .price-compare-cards .price-card:first-child .current-price {
+            color: #7B5CFF;
+        }
+
+        .price-compare-cards .price-card:last-child .current-price {
+            color: #FF4D4F;
+        }
+
+        .date-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* 每个商品独立的价格区块 */
+        .price-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .price-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .price-section-header .product-info {
+            flex: 1;
+        }
+
+        .price-section-header .product-label {
+            font-size: 12px;
+            color: var(--text-hint);
+            margin-bottom: 4px;
+        }
+
+        .price-section-header .product-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .price-section-header .current-price-box {
+            text-align: right;
+        }
+
+        .price-section-header .price-label {
+            font-size: 11px;
+            color: var(--text-hint);
+        }
+
+        .price-section-header .current-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .price-section-header .lowest-badge {
+            display: inline-block;
+            font-size: 10px;
+            background: #F0FFF4;
+            color: #52C41A;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .price-section-header .premium-badge {
+            display: inline-block;
+            font-size: 10px;
+            background: #FFF7E6;
+            color: #FA8C16;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .price-mini-chart {
+            height: 80px;
+            position: relative;
+            background: #FAFAFA;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .price-mini-chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .price-section-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-hint);
+            margin-top: 8px;
+        }
+
+        .price-section-footer .min-price-hint {
+            color: #52C41A;
+        }
+
+        .chart-date-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: var(--text-hint);
+            padding: 0 5px;
+            margin-top: 4px;
+        }
+
+        .chart-date-labels span {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .chart-date-labels span:hover {
+            background: var(--bg-gray);
+        }
+
+        .chart-date-labels span.active {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-hint);
+            margin-top: 8px;
+        }
+
+        .price-compare {
+            display: flex;
+            gap: 10px;
+        }
+
+        .price-compare-item {
+            flex: 1;
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .price-compare-item .label {
+            font-size: 11px;
+            color: var(--text-hint);
+            margin-bottom: 4px;
+        }
+
+        .price-compare-item .premium {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--danger-color);
+        }
+
+        /* 口碑分析 */
+        .reputation-card {
+            background: var(--bg-gray);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .reputation-header {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .sentiment-bar {
+            height: 8px;
+            border-radius: 4px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .sentiment-positive {
+            background: var(--success-color);
+            height: 100%;
+        }
+
+        .sentiment-negative {
+            background: var(--danger-color);
+            height: 100%;
+        }
+
+        .sentiment-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .sentiment-labels .positive {
+            color: var(--success-color);
+        }
+
+        .sentiment-labels .negative {
+            color: var(--danger-color);
+        }
+
+        .review-summary {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .review-summary strong {
+            color: var(--text-primary);
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 32px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(123, 92, 255, 0.3);
+        }
+
+        /* 加载动画 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--bg-gray);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">正在分析商品数据...</div>
+    </div>
+
+    <!-- 移动端容器 -->
+    <div class="mobile-wrapper">
+
+        <div class="page active" id="pageOne">
+            <div class="page-one">
+            <div class="page-header">
+                <h1>商品参数 PK 台</h1>
+                <p class="desc">粘贴您想要对比的商品链接，我将从核心卖点、价格估算、网评口碑等多个维度对比分析商品。</p>
+            </div>
+
+            <!-- 商品链接输入 -->
+            <div class="form-section">
+                <div class="form-label">
+                    <span class="required">*</span>
+                    <span>商品链接</span>
+                    <span class="optional">(支持以下平台链接)</span>
+                </div>
+                <div class="platform-tags">
+                    <span class="platform-tag">淘宝</span>
+                    <span class="platform-tag">天猫</span>
+                    <span class="platform-tag">1688</span>
+                    <span class="platform-tag">京东</span>
+                </div>
+
+                <div class="product-inputs" id="productInputs">
+                    <div class="product-input-item" data-index="0">
+                        <div class="product-input-header">
+                            <span class="tag">商品 1</span>
+                        </div>
+                        <div class="product-input-content">
+                            <input type="text" placeholder="请到电商平台商品页面复制链接，打开本页面自动粘贴" class="product-url-input">
+                            <button class="paste-btn" onclick="pasteFromClipboard(0)">粘贴</button>
+                        </div>
+                    </div>
+                    <div class="product-input-item" data-index="1">
+                        <div class="product-input-header">
+                            <span class="tag">商品 2</span>
+                            <button class="remove-btn" onclick="removeProductInput(1)" style="display: none;">×</button>
+                        </div>
+                        <div class="product-input-content">
+                            <input type="text" placeholder="请到电商平台商品页面复制链接，打开本页面自动粘贴" class="product-url-input">
+                            <button class="paste-btn" onclick="pasteFromClipboard(1)">粘贴</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="add-more-btn" onclick="addProductInput()">
+                    <span>+</span>
+                    <span>继续添加商品</span>
+                </button>
+            </div>
+
+            <!-- 分析角度 -->
+            <div class="form-section">
+                <div class="form-label">
+                    <span>分析角度</span>
+                    <span class="optional">(选填)</span>
+                </div>
+                <textarea class="analysis-input" id="analysisInput" placeholder="请描述你希望从哪方面对产品进行分析或者描述你的使用场景，我将给出购买建议"></textarea>
+            </div>
+
+            <!-- 演示链接提示 -->
+            <div class="form-section" style="background: #FFF7E6; border-radius: 12px; padding: 14px; border: 1px solid #FFD591;">
+                <div class="form-label" style="margin-bottom: 8px;">
+                    <span>📋 演示链接（点击可复制）</span>
+                </div>
+                <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                    当前为演示版本，请使用以下链接体验完整功能
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+                    <div style="color: #7B5CFF; font-weight: 500; margin-top: 4px;">瑜伽裤类：</div>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/732095503102.html')" style="color: #666; word-break: break-all;">1688工厂 瑜伽裤同款</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=954168320268')" style="color: #666; word-break: break-all;">Lululemon Align 高腰紧身裤</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.tmall.com/item.htm?id=733245459611&skuId=6197742978628')" style="color: #666; word-break: break-all;">MAIA ACTIVE 云感高腰紧身裤</a>
+
+                    <div style="color: #7B5CFF; font-weight: 500; margin-top: 8px;">香氛类：</div>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://detail.1688.com/offer/902195705858.html')" style="color: #666; word-break: break-all;">1688工厂 香薰精油</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=635850032147&mi_id=0000gXUxIyu-77IVlIOzsKsFI10gaRTkAMxZeFS0PVCGSbI&ns=1&priceTId=213e030317756678909374621e1255&skuId=5061780499435&spm=a21n57.imgsearch.item.13&utparam=%7B%22aplus_abtest%22%3A%2296150028c4d0977c75298af637395bcd%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">Aesop 护手霜香薰组合</a>
+                    <a href="javascript:void(0)" onclick="copyToClipboard('https://item.taobao.com/item.htm?abbucket=8&id=1035002841443&mi_id=0000wCQcDlyDcIr1F8DKKh8klDm7nfkqUaB7GhNcUJiBoZk&ns=1&priceTId=213e030317756680621515308e1255&skuId=6050217353661&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22340ae43a838c1da5eae4c4c8208d1d5d%22%7D&xxc=taobaoSearch')" style="color: #666; word-break: break-all;">观夏 昆仑煮雪 香薰</a>
+                </div>
+            </div>
+            </div>
+
+            <div class="bottom-action">
+                <button class="submit-btn" id="submitBtn" onclick="startAnalysis()">开始分析</button>
+            </div>
+        </div>
+
+        <!-- 页面二：PK报告 -->
+    <div class="page" id="pageTwo">
+        <div class="report-header">
+            <h2>商品参数 PK 报告</h2>
+            <p class="slogan">狠挑 · 理性消费，用数据说话</p>
+        </div>
+
+        <!-- 统计数字区域 -->
+        <div class="stats-bar">
+            <div class="stat-block">
+                <div class="stat-num" id="productCount">3</div>
+                <div class="stat-label">本次对比商品</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-block">
+                <div class="stat-num" id="savedAmount">¥1444</div>
+                <div class="stat-label">累计省溢价</div>
+            </div>
+        </div>
+
+        <div class="report-content">
+            <!-- 对比商品展示 -->
+            <div class="section">
+                <div class="section-title">对比商品</div>
+                <div class="compare-cards" id="compareCards">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+            <!-- 商品核心指标 -->
+            <div class="section">
+                <div class="section-title">商品核心指标</div>
+                <div id="indicators">
+                    <!-- 动态生成 -->
+                </div>
+                <div id="moreIndicators" class="more-indicators">
+                    <!-- 更多指标动态生成 -->
+                </div>
+                <button class="show-more-btn" onclick="showMoreIndicators()">
+                    <span>更多指标对比展示</span>
+                    <span>▼</span>
+                </button>
+            </div>
+
+            <!-- 商品溢价估算 -->
+            <div class="section">
+                <div class="section-title">商品溢价估算</div>
+                <div id="priceSections">
+                    <!-- 每个商品的价格区块动态生成 -->
+                </div>
+            </div>
+
+            <!-- 全网口碑 -->
+            <div class="section">
+                <div class="section-title">全网口碑</div>
+                <div id="reputations">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">返回继续对比</button>
+    </div>
+    </div>
+
+    <script>
+        // ==================== 完整模拟数据 ====================
+        // 使用文档中的真实图片链接
+        const mockProductsDB = {
+            // 瑜伽裤类
+            yoga_pants: [
+                {
+                    id: 'yoga_1688',
+                    name: '高腰瑜伽裤 无logo 同款 工厂直供',
+                    platform: '1688',
+                    url: 'https://detail.1688.com/offer/732095503102.html',
+                    price: 68,
+                    category: 'yoga_pants',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703601987-2f55b03d-d47e-4062-9e32-e384a7dc68ea.png',
+                    material: { mainFabric: '锦纶氨纶混纺', composition: '80% 锦纶 + 20% 氨纶', gramWeight: '180g/m²' },
+                    safety: { safetyLevel: '未标注', antibacterial: '无', formaldehyde: '未检测', pH: '未检测', fluorescence: '未检测' },
+                    specs: { elastaneContent: '20%', breathability: '≥120mm/s', pillingResistance: '未标注', elasticRecovery: '未标注' },
+                    certificates: [],
+                    priceHistory: [68, 65, 68, 62, 68, 68, 65, 60, 62, 65, 68, 68],
+                    lowestPrice: 60,
+                    reputation: { totalReviews: 1250, positiveRate: 87, negativeRate: 13, positiveKeywords: ['价格便宜', '质量还行'], negativeKeywords: ['做工粗糙', '无检测报告'] }
+                },
+                {
+                    id: 'yoga_tmall_1',
+                    name: 'Lululemon Align 高腰紧身裤 25英寸',
+                    platform: '天猫',
+                    url: 'https://detail.tmall.com/item.htm?id=954168320268',
+                    price: 850,
+                    category: 'yoga_pants',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703601955-a60509dd-975d-4237-849d-8481b74ca651.png',
+                    material: { mainFabric: 'Nulu™ 面料', composition: '81% 锦纶 + 19% 氨纶', gramWeight: '180g/m²' },
+                    safety: { safetyLevel: 'B类', antibacterial: 'AAA级抗菌', formaldehyde: '未检出', pH: '6.5', fluorescence: '无荧光剂' },
+                    specs: { elastaneContent: '19%', breathability: '≥200mm/s', pillingResistance: '4级', elasticRecovery: '≥90%' },
+                    certificates: [
+                        { name: 'GB/T 22849-2014 针织运动服', issuer: 'SGS', verified: true },
+                        { name: 'GB 18401-2010 B类 安全技术规范', issuer: '中纺标', verified: true },
+                        { name: '抗菌检测报告', issuer: '国家纺织品质检中心', verified: true }
+                    ],
+                    priceHistory: [850, 850, 799, 850, 850, 799, 850, 765, 850, 850, 799, 850],
+                    lowestPrice: 765,
+                    reputation: { totalReviews: 12680, positiveRate: 96, negativeRate: 4, positiveKeywords: ['面料柔软', '穿着舒适', '透气性好'], negativeKeywords: ['价格贵', '容易起球'] }
+                },
+                {
+                    id: 'yoga_tmall_2',
+                    name: 'MAIA ACTIVE 云感高腰紧身裤',
+                    platform: '天猫',
+                    url: 'https://detail.tmall.com/item.htm?id=733245459611&skuId=6197742978628',
+                    price: 299,
+                    category: 'yoga_pants',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703601985-c91eb36b-ebc4-4685-9fdf-db85b0b63d16.png',
+                    material: { mainFabric: '云感面料', composition: '75% 锦纶 + 25% 氨纶', gramWeight: '220g/m²' },
+                    safety: { safetyLevel: 'B类', antibacterial: 'AA级抗菌', formaldehyde: '未检出', pH: '6.8', fluorescence: '无荧光剂' },
+                    specs: { elastaneContent: '25%', breathability: '≥180mm/s', pillingResistance: '3-4级', elasticRecovery: '≥88%' },
+                    certificates: [
+                        { name: 'GB/T 22849-2014 针织运动服', issuer: '中纺标', verified: true },
+                        { name: 'GB 18401-2010 B类', issuer: 'SGS', verified: true }
+                    ],
+                    priceHistory: [399, 399, 349, 299, 299, 349, 299, 279, 299, 299, 269, 299],
+                    lowestPrice: 269,
+                    reputation: { totalReviews: 8520, positiveRate: 94, negativeRate: 6, positiveKeywords: ['性价比高', '面料舒适', '版型好看'], negativeKeywords: ['穿久了松', '裤脚卷边'] }
+                }
+            ],
+            // 香氛类
+            fragrance: [
+                {
+                    id: 'frag_1688',
+                    name: '香薰精油扩香液 同款代工',
+                    platform: '1688',
+                    url: 'https://detail.1688.com/offer/902195705858.html',
+                    price: 28,
+                    category: 'fragrance',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703602089-b817874f-43eb-4449-b41c-a35946774967.png',
+                    fragrance: { family: '混合花香调', topNotes: '未标注', middleNotes: '未标注', baseNotes: '未标注', longevity: '15-20天' },
+                    safety: { IFRACompliance: false, allergens: '未标注', origin: '中国' },
+                    certificates: [],
+                    priceHistory: [35, 30, 28, 25, 28, 28, 25, 22, 25, 28, 30, 28],
+                    lowestPrice: 22,
+                    reputation: { totalReviews: 3680, positiveRate: 82, negativeRate: 18, positiveKeywords: ['便宜', '量大'], negativeKeywords: ['味道刺鼻', '无检测报告'] }
+                },
+                {
+                    id: 'frag_taobao_1',
+                    name: 'Aesop 伊索 塔西提护手霜香薰组合',
+                    platform: '淘宝',
+                    url: 'https://item.taobao.com/item.htm?abbucket=8&id=635850032147&mi_id=0000gXUxIyu-77IVlIOzsKsFI10gaRTkAMxZeFS0PVCGSbI&ns=1&priceTId=213e030317756678909374621e1255&skuId=5061780499435&spm=a21n57.imgsearch.item.13&utparam=%7B%22aplus_abtest%22%3A%2296150028c4d0977c75298af637395bcd%22%7D&xxc=taobaoSearch',
+                    price: 520,
+                    category: 'fragrance',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703602976-f0f5f0b3-a2a3-48a3-8263-c3a5f4337a14.png',
+                    fragrance: { family: '木质花香调', topNotes: '佛手柑、柠檬', middleNotes: '薰衣草', baseNotes: '檀香、雪松', longevity: '3-4小时' },
+                    safety: { IFRACompliance: true, allergens: ['柠檬烯'], origin: '澳大利亚' },
+                    certificates: [
+                        { name: '国家化妆品备案', issuer: '国家药监局', verified: true },
+                        { name: 'Cruelty-Free 无动物测试认证', issuer: 'Leaping Bunny', verified: true }
+                    ],
+                    priceHistory: [580, 560, 520, 540, 520, 560, 520, 480, 500, 520, 540, 520],
+                    lowestPrice: 480,
+                    reputation: { totalReviews: 2150, positiveRate: 95, negativeRate: 5, positiveKeywords: ['味道清新', '滋润不油腻', '包装高级'], negativeKeywords: ['贵', '味道淡'] }
+                },
+                {
+                    id: 'frag_taobao_2',
+                    name: '观夏 昆仑煮雪 东方室内香薰',
+                    platform: '淘宝',
+                    url: 'https://item.taobao.com/item.htm?abbucket=8&id=1035002841443&mi_id=0000wCQcDlyDcIr1F8DKKh8klDm7nfkqUaB7GhNcUJiBoZk&ns=1&priceTId=213e030317756680621515308e1255&skuId=6050217353661&spm=a21n57.1.hoverItem.3&utparam=%7B%22aplus_abtest%22%3A%22340ae43a838c1da5eae4c4c8208d1d5d%22%7D&xxc=taobaoSearch',
+                    price: 298,
+                    category: 'fragrance',
+                    image: 'https://intranetproxy.alipay.com/skylark/lark/0/2026/png/163856371/1775703602749-c195c3b9-05ff-4378-85cc-23119f96901a.png',
+                    fragrance: { family: '木质清香调', topNotes: '雪松、薄荷', middleNotes: '白茶、兰花', baseNotes: '琥珀、麝香', longevity: '30-45天' },
+                    safety: { IFRACompliance: true, allergens: ['柠檬烯'], origin: '中国' },
+                    certificates: [
+                        { name: 'IFRA 安全认证', issuer: 'IFRA', verified: true },
+                        { name: '质检报告', issuer: '国家化妆品质量监督检验中心', verified: true }
+                    ],
+                    priceHistory: [298, 298, 268, 298, 298, 268, 298, 248, 268, 298, 298, 298],
+                    lowestPrice: 248,
+                    reputation: { totalReviews: 8960, positiveRate: 94, negativeRate: 6, positiveKeywords: ['味道高级', '国货之光', '包装美'], negativeKeywords: ['藤条发霉', '味道太淡'] }
+                }
+            ],
+            // 四件套类（保留原有数据）
+            bedding: [
+                {
+                    id: 'bed_001',
+                    name: '罗莱家纺 60支长绒棉四件套 纯色简约',
+                    platform: '天猫',
+                    url: 'https://detail.tmall.com/item.htm?id=598236154789',
+                    price: 899,
+                    category: 'bedding',
+                    image: 'https://via.placeholder.com/80x80/87CEEB/ffffff?text=罗莱',
+                    material: { fabric: '长绒棉', yarnCount: '60支', weavingProcess: '贡缎', composition: '100%棉', gramWeight: '128g/m²' },
+                    safety: { safetyLevel: 'A类（婴幼儿标准）', formaldehyde: '未检出', pH: '6.2', colorFastness: '4级', shrinkage: '≤3%' },
+                    specs: { threadCount: '300根/平方英寸', breathability: '≥180mm/s', pillingResistance: '4级', handFeel: '丝滑细腻' },
+                    certificates: [
+                        { name: 'GB 18401-2010 A类 安全技术规范', issuer: '中纺标', verified: true },
+                        { name: 'Oeko-Tex Standard 100', issuer: '国际环保纺织协会', verified: true },
+                        { name: '新疆长绒棉认证', issuer: '中国棉花协会', verified: true }
+                    ],
+                    priceHistory: [1299, 1099, 999, 899, 999, 1099, 999, 799, 899, 999, 1099, 899],
+                    lowestPrice: 799,
+                    reputation: { totalReviews: 15230, positiveRate: 96, negativeRate: 4, positiveKeywords: ['手感丝滑', '颜色高级', '不起球'], negativeKeywords: ['价格贵', '容易皱'] }
+                },
+                {
+                    id: 'bed_002',
+                    name: '水星家纺 天丝四件套 夏凉款',
+                    platform: '天猫',
+                    url: 'https://detail.tmall.com/item.htm?id=612589634521',
+                    price: 599,
+                    category: 'bedding',
+                    image: 'https://via.placeholder.com/80x80/98FB98/ffffff?text=水星',
+                    material: { fabric: '天丝（莱赛尔纤维）', yarnCount: '60支', weavingProcess: '平纹', composition: '100%莱赛尔', gramWeight: '110g/m²' },
+                    safety: { safetyLevel: 'A类（婴幼儿标准）', formaldehyde: '未检出', pH: '6.5', colorFastness: '4级', shrinkage: '≤2%' },
+                    specs: { threadCount: '200根/平方英寸', breathability: '≥220mm/s', pillingResistance: '3-4级', handFeel: '冰凉顺滑' },
+                    certificates: [
+                        { name: 'GB 18401-2010 A类', issuer: 'SGS', verified: true },
+                        { name: 'Lenzing TENCEL™ 认证', issuer: '兰精公司', verified: true }
+                    ],
+                    priceHistory: [799, 699, 599, 549, 599, 699, 599, 499, 549, 599, 699, 599],
+                    lowestPrice: 499,
+                    reputation: { totalReviews: 9870, positiveRate: 94, negativeRate: 6, positiveKeywords: ['凉爽透气', '手感顺滑', '夏天必备'], negativeKeywords: ['容易起皱', '机洗变形'] }
+                },
+                {
+                    id: 'bed_003',
+                    name: '网易严选 纯棉四件套 简约纯色',
+                    platform: '天猫',
+                    url: 'https://detail.tmall.com/item.htm?id=625489123654',
+                    price: 299,
+                    category: 'bedding',
+                    image: 'https://via.placeholder.com/80x80/FFE4B5/ffffff?text=网易',
+                    material: { fabric: '纯棉', yarnCount: '40支', weavingProcess: '斜纹', composition: '100%棉', gramWeight: '145g/m²' },
+                    safety: { safetyLevel: 'B类', formaldehyde: '未检出', pH: '6.8', colorFastness: '3-4级', shrinkage: '≤4%' },
+                    specs: { threadCount: '133根/平方英寸', breathability: '≥150mm/s', pillingResistance: '3级', handFeel: '柔软亲肤' },
+                    certificates: [{ name: 'GB 18401-2010 B类', issuer: '第三方检测机构', verified: true }],
+                    priceHistory: [399, 349, 299, 279, 299, 349, 299, 259, 279, 299, 349, 299],
+                    lowestPrice: 259,
+                    reputation: { totalReviews: 32560, positiveRate: 92, negativeRate: 8, positiveKeywords: ['性价比高', '手感舒适', '颜色百搭'], negativeKeywords: ['有点薄', '洗后缩水'] }
+                }
+            ]
+        };
+
+        // 将所有商品扁平化为数组，并建立 URL -> 商品 的映射
+        const allProducts = [
+            ...mockProductsDB.yoga_pants,
+            ...mockProductsDB.fragrance,
+            ...mockProductsDB.bedding
+        ];
+
+        // URL 映射表
+        const urlToProduct = {};
+        allProducts.forEach(p => {
+            urlToProduct[p.url] = p;
+        });
+
+        let productInputCount = 2;
+        let analyzedProducts = [];
+
+        // 粘贴
+        async function pasteFromClipboard(index) {
+            try {
+                const text = await navigator.clipboard.readText();
+                const inputs = document.querySelectorAll('.product-url-input');
+                inputs[index].value = text;
+                checkAndParseProduct(index, text);
+            } catch (err) {
+                alert('无法读取剪贴板，请手动粘贴');
+            }
+        }
+
+        // 检查并解析商品
+        function checkAndParseProduct(index, url) {
+            if (url && url.length > 10) {
+                const item = document.querySelector(`.product-input-item[data-index="${index}"]`);
+                if (!item) return;
+
+                // 查找匹配的商品
+                let product = urlToProduct[url];
+
+                // 如果没有精确匹配，尝试模糊匹配
+                if (!product) {
+                    for (const p of allProducts) {
+                        if (url.includes(p.id) || p.url.includes(url.split('?')[0].split('/').pop())) {
+                            product = p;
+                            break;
+                        }
+                    }
+                }
+
+                if (product) {
+                    // 找到匹配的商品
+                    item.classList.add('has-value');
+                    item.dataset.productId = product.id;
+                    item.innerHTML = `
+                        <div class="product-input-header">
+                            <span class="tag">商品 ${index + 1}</span>
+                            <button class="remove-btn" onclick="removeProductInput(${index})">×</button>
+                        </div>
+                        <div class="product-card">
+                            <img class="img" src="${product.image}" alt="">
+                            <div class="info">
+                                <div class="name">${product.name}</div>
+                                <div class="meta">
+                                    <span class="platform">${product.platform}</span>
+                                    <span class="price">¥${product.price}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // 未找到匹配商品，显示提示
+                    item.classList.remove('has-value');
+                    alert('未能识别该商品链接，请使用预设的演示链接');
+                }
+            }
+        }
+
+        // 添加商品输入
+        function addProductInput() {
+            const container = document.getElementById('productInputs');
+            // 使用当前实际的商品数量作为新索引，而不是 productInputCount
+            const currentItems = container.querySelectorAll('.product-input-item');
+            const newIndex = currentItems.length;
+
+            const newItem = document.createElement('div');
+            newItem.className = 'product-input-item';
+            newItem.dataset.index = newIndex;
+            newItem.innerHTML = `
+                <div class="product-input-header">
+                    <span class="tag">商品 ${newIndex + 1}</span>
+                    <button class="remove-btn" onclick="removeProductInput(${newIndex})">×</button>
+                </div>
+                <div class="product-input-content">
+                    <input type="text" placeholder="请到电商平台商品页面复制链接，打开本页面自动粘贴" class="product-url-input">
+                    <button class="paste-btn" onclick="pasteFromClipboard(${newIndex})">粘贴</button>
+                </div>
+            `;
+
+            container.appendChild(newItem);
+
+            // 显示所有删除按钮
+            updateRemoveButtons();
+        }
+
+        // 移除商品输入
+        function removeProductInput(index) {
+            const item = document.querySelector(`.product-input-item[data-index="${index}"]`);
+            if (item) {
+                item.remove();
+                updateProductIndices();
+                updateRemoveButtons();
+            }
+        }
+
+        // 更新商品编号
+        function updateProductIndices() {
+            const items = document.querySelectorAll('.product-input-item');
+            items.forEach((item, i) => {
+                // 更新 data-index
+                item.setAttribute('data-index', i);
+                // 更新标签文字
+                const tag = item.querySelector('.product-input-header .tag');
+                if (tag) {
+                    tag.textContent = `商品 ${i + 1}`;
+                }
+                // 更新删除按钮的 onclick
+                const removeBtn = item.querySelector('.remove-btn');
+                if (removeBtn) {
+                    removeBtn.setAttribute('onclick', `removeProductInput(${i})`);
+                }
+                // 更新粘贴按钮的 onclick
+                const pasteBtn = item.querySelector('.paste-btn');
+                if (pasteBtn) {
+                    pasteBtn.setAttribute('onclick', `pasteFromClipboard(${i})`);
+                }
+            });
+        }
+
+        // 更新删除按钮显示
+        function updateRemoveButtons() {
+            const items = document.querySelectorAll('.product-input-item');
+            items.forEach((item, i) => {
+                const btn = item.querySelector('.remove-btn');
+                if (btn && items.length > 2) {
+                    btn.style.display = 'block';
+                } else if (btn) {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+
+        // 开始分析
+        function startAnalysis() {
+            const filledItems = document.querySelectorAll('.product-input-item.has-value');
+            if (filledItems.length < 2) {
+                alert('请至少添加2个商品进行对比');
+                return;
+            }
+
+            // 显示加载
+            document.getElementById('loadingOverlay').classList.add('show');
+
+            // 模拟加载
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.remove('show');
+
+                // 收集已解析的商品
+                analyzedProducts = [];
+                filledItems.forEach((item) => {
+                    const productId = item.dataset.productId;
+                    const product = allProducts.find(p => p.id === productId);
+                    if (product) {
+                        analyzedProducts.push(product);
+                    }
+                });
+
+                if (analyzedProducts.length < 2) {
+                    alert('有效商品不足2个，请检查输入');
+                    return;
+                }
+
+                // 生成报告
+                generateReport();
+
+                // 切换页面
+                document.getElementById('pageOne').classList.remove('active');
+                document.getElementById('pageTwo').classList.add('active');
+
+                // 延迟绘制折线图（等页面显示后再绘制）
+                setTimeout(() => {
+                    drawLineChart();
+                }, 100);
+            }, 1500);
+        }
+
+        // 生成报告
+        function generateReport() {
+            // 更新统计数据
+            document.getElementById('productCount').textContent = analyzedProducts.length;
+            const maxPrice = Math.max(...analyzedProducts.map(p => p.price));
+            const minPrice = Math.min(...analyzedProducts.map(p => p.price));
+            document.getElementById('savedAmount').textContent = '¥' + (maxPrice - minPrice);
+
+            // 生成对比卡片
+            const compareCardsHtml = analyzedProducts.map(p => `
+                <div class="compare-card">
+                    <img class="img" src="${p.image}" alt="">
+                    <div class="name">${p.name}</div>
+                    <div class="price">¥${p.price}</div>
+                </div>
+            `).join('');
+            document.getElementById('compareCards').innerHTML = compareCardsHtml;
+
+            // 根据品类生成指标
+            generateIndicators();
+
+            // 生成价格图表
+            generatePriceChart();
+
+            // 生成口碑
+            generateReputations();
+        }
+
+        // 生成指标对比
+        function generateIndicators() {
+            const category = analyzedProducts[0]?.category;
+            let mainIndicatorsHtml = '';
+            let moreIndicatorsHtml = '';
+
+            if (category === 'yoga_pants') {
+                // 瑜伽裤 - 主要指标
+                mainIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🦠</span>
+                                <span class="title">抗菌安全</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.safety.antibacterial}`).join('；')}。适合日常运动穿着，降低细菌滋生风险。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">详细参数对比</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品：${p.name.substring(0, 15)}...</div>
+                                    <div class="indicator-detail-row"><span>安全等级</span><span>${p.safety.safetyLevel}</span></div>
+                                    <div class="indicator-detail-row"><span>抗菌等级</span><span>${p.safety.antibacterial}</span></div>
+                                    <div class="indicator-detail-row"><span>甲醛含量</span><span>${p.safety.formaldehyde}</span></div>
+                                    <div class="indicator-detail-row"><span>pH值</span><span>${p.safety.pH}</span></div>
+                                    <div class="indicator-detail-row"><span>荧光剂</span><span>${p.safety.fluorescence}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">💨</span>
+                                <span class="title">透气排汗</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>透气性${p.specs.breathability}`).join('；')}。
+                            运动时保持干爽舒适。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">详细参数对比</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>透气性</span><span>${p.specs.breathability}</span></div>
+                                    <div class="indicator-detail-row"><span>吸湿排汗</span><span>${p.specs.moistureWicking || '未标注'}</span></div>
+                                    <div class="indicator-detail-row"><span>面料成分</span><span>${p.material.composition}</span></div>
+                                    <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">✨</span>
+                                <span class="title">面料弹性</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>氨纶含量${p.specs.elastaneContent}，弹性回复率${p.specs.elasticRecovery}`).join('；')}。
+                            四面弹力设计，运动无束缚。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">详细参数对比</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>氨纶含量</span><span>${p.specs.elastaneContent}</span></div>
+                                    <div class="indicator-detail-row"><span>弹性回复率</span><span>${p.specs.elasticRecovery}</span></div>
+                                    <div class="indicator-detail-row"><span>抗起球等级</span><span>${p.specs.pillingResistance}</span></div>
+                                    <div class="indicator-detail-row"><span>四面弹力</span><span>${p.specs.fourWayStretch ? '支持' : '不支持'}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                // 更多指标
+                moreIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🔍</span>
+                                <span class="title">检测报告</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => {
+                                const certCount = p.certificates.length;
+                                return `<span class="highlight">${String.fromCharCode(65+i)}商品</span>有${certCount}份检测报告${certCount > 0 ? '，已验证' : '，无检测报告'}、`;
+                            }).join('')}
+                        </div>
+                        <div class="indicator-detail">
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF; margin-bottom: 4px;">${String.fromCharCode(65+i)}商品 - 检测报告</div>
+                                    ${p.certificates.map(cert => `
+                                        <div class="indicator-detail-row">
+                                            <span>${cert.name}</span>
+                                            <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                        </div>
+                                    `).join('') || '<div style="color: #999;">暂无检测报告</div>'}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🧵</span>
+                                <span class="title">面料成分</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.material.mainFabric}，${p.material.composition}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">面料成分详解</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>主要面料</span><span>${p.material.mainFabric}</span></div>
+                                    <div class="indicator-detail-row"><span>成分组成</span><span>${p.material.composition}</span></div>
+                                    <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (category === 'fragrance') {
+                // 香氛指标
+                mainIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🌸</span>
+                                <span class="title">香调分析</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.fragrance.family}，前调：${p.fragrance.topNotes}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">香调详细对比</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>香调家族</span><span>${p.fragrance.family}</span></div>
+                                    <div class="indicator-detail-row"><span>前调</span><span>${p.fragrance.topNotes}</span></div>
+                                    <div class="indicator-detail-row"><span>中调</span><span>${p.fragrance.middleNotes}</span></div>
+                                    <div class="indicator-detail-row"><span>后调</span><span>${p.fragrance.baseNotes}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">⏱️</span>
+                                <span class="title">留香时长</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>留香约${p.fragrance.longevity}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">留香详细对比</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>留香时长</span><span>${p.fragrance.longevity}</span></div>
+                                    <div class="indicator-detail-row"><span>扩散范围</span><span>${p.fragrance.sillage || '未标注'}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🛡️</span>
+                                <span class="title">安全认证</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>IFRA认证${p.safety.IFRACompliance ? '通过' : '未通过'}，产地：${p.safety.origin}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">安全认证详情</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>IFRA认证</span><span style="color: ${p.safety.IFRACompliance ? '#52C41A' : '#FF4D4F'}">${p.safety.IFRACompliance ? '通过' : '未通过'}</span></div>
+                                    <div class="indicator-detail-row"><span>致敏原</span><span>${Array.isArray(p.safety.allergens) ? p.safety.allergens.join('、') : p.safety.allergens}</span></div>
+                                    <div class="indicator-detail-row"><span>产地</span><span>${p.safety.origin}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                // 香氛更多指标
+                moreIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🍾</span>
+                                <span class="title">酒精含量</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>酒精含量${p.fragrance.alcoholContent || '未标注'}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">酒精含量详情</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>酒精含量</span><span>${p.fragrance.alcoholContent || '未标注'}</span></div>
+                                    <div class="indicator-detail-row"><span>包装规格</span><span>${p.specs?.packaging || '未标注'}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (category === 'bedding') {
+                // 四件套指标
+                mainIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🛏️</span>
+                                <span class="title">面料品质</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.material.yarnCount}${p.material.weavingProcess}，${p.material.composition}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">面料品质详情</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>面料</span><span>${p.material.fabric}</span></div>
+                                    <div class="indicator-detail-row"><span>支数</span><span>${p.material.yarnCount}</span></div>
+                                    <div class="indicator-detail-row"><span>织造工艺</span><span>${p.material.weavingProcess}</span></div>
+                                    <div class="indicator-detail-row"><span>成分</span><span>${p.material.composition}</span></div>
+                                    <div class="indicator-detail-row"><span>克重</span><span>${p.material.gramWeight}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">👶</span>
+                                <span class="title">安全等级</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>${p.safety.safetyLevel}，甲醛${p.safety.formaldehyde}、`).join('')}
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">安全等级详情</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>安全等级</span><span>${p.safety.safetyLevel}</span></div>
+                                    <div class="indicator-detail-row"><span>甲醛含量</span><span>${p.safety.formaldehyde}</span></div>
+                                    <div class="indicator-detail-row"><span>pH值</span><span>${p.safety.pH}</span></div>
+                                    <div class="indicator-detail-row"><span>色牢度</span><span>${p.safety.colorFastness}</span></div>
+                                    <div class="indicator-detail-row"><span>缩水率</span><span>${p.safety.shrinkage}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">💨</span>
+                                <span class="title">透气性能</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>透气性${p.specs.breathability}，手感${p.specs.handFeel}`).join('；')}。
+                        </div>
+                        <div class="indicator-detail">
+                            <div class="indicator-detail-title">透气性能详情</div>
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品</div>
+                                    <div class="indicator-detail-row"><span>透气性</span><span>${p.specs.breathability}</span></div>
+                                    <div class="indicator-detail-row"><span>抗起球等级</span><span>${p.specs.pillingResistance}</span></div>
+                                    <div class="indicator-detail-row"><span>手感</span><span>${p.specs.handFeel}</span></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                moreIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">🔍</span>
+                                <span class="title">检测报告</span>
+                            </div>
+                            <button class="detail-btn" onclick="toggleDetail(this)">查看详细解读</button>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => {
+                                const certCount = p.certificates.length;
+                                return `<span class="highlight">${String.fromCharCode(65+i)}商品</span>有${certCount}份权威检测报告、`;
+                            }).join('')}
+                        </div>
+                        <div class="indicator-detail">
+                            ${analyzedProducts.map((p, i) => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="font-weight: 500; color: #7B5CFF;">${String.fromCharCode(65+i)}商品 - 检测报告</div>
+                                    ${p.certificates.map(cert => `
+                                        <div class="indicator-detail-row">
+                                            <span>${cert.name}</span>
+                                            <span style="color: ${cert.verified ? '#52C41A' : '#FF4D4F'}">${cert.verified ? '✓ 已验证' : '✗ 存疑'}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // 通用指标
+                mainIndicatorsHtml = `
+                    <div class="indicator-item">
+                        <div class="indicator-header">
+                            <div class="indicator-header-left">
+                                <span class="icon">💰</span>
+                                <span class="title">价格对比</span>
+                            </div>
+                        </div>
+                        <div class="indicator-content">
+                            ${analyzedProducts.map((p, i) => `<span class="highlight">${String.fromCharCode(65+i)}商品</span>售价¥${p.price}、`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('indicators').innerHTML = mainIndicatorsHtml;
+
+            // 更新更多指标按钮
+            const showMoreBtn = document.querySelector('.show-more-btn');
+            if (showMoreBtn && moreIndicatorsHtml) {
+                showMoreBtn.style.display = 'flex';
+                showMoreBtn.dataset.moreHtml = moreIndicatorsHtml;
+            }
+        }
+
+        // 切换详细解读
+        function toggleDetail(btn) {
+            const detail = btn.closest('.indicator-item').querySelector('.indicator-detail');
+            if (detail) {
+                detail.classList.toggle('show');
+                btn.textContent = detail.classList.contains('show') ? '收起详细解读' : '查看详细解读';
+            }
+        }
+
+        // 展开更多指标
+        function showMoreIndicators() {
+            const moreIndicators = document.getElementById('moreIndicators');
+            const showMoreBtn = document.querySelector('.show-more-btn');
+
+            if (moreIndicators.classList.contains('show')) {
+                moreIndicators.classList.remove('show');
+                showMoreBtn.innerHTML = '<span>更多指标对比展示</span><span>▼</span>';
+            } else {
+                // 填充更多指标内容
+                const moreHtml = showMoreBtn.dataset.moreHtml || '';
+                moreIndicators.innerHTML = moreHtml;
+                moreIndicators.classList.add('show');
+                showMoreBtn.innerHTML = '<span>收起指标对比</span><span>▲</span>';
+            }
+        }
+
+        // 生成价格区块（每个商品独立）
+        function generatePriceChart() {
+            const days = generate30Days();
+            const container = document.getElementById('priceSections');
+            if (!container) return;
+
+            // 为每个商品生成独立的价格区块
+            const html = analyzedProducts.map((product, index) => {
+                const letter = String.fromCharCode(65 + index);
+                const premium = product.price - product.lowestPrice;
+                const isLowest = premium <= 0;
+
+                // 生成30天价格数据
+                const priceData = generate30DayPrices(product.priceHistory, product.price);
+                const minPrice = Math.min(...priceData);
+
+                return `
+                    <div class="price-section">
+                        <div class="price-section-header">
+                            <div class="product-info">
+                                <div class="product-label">商品 ${letter}</div>
+                                <div class="product-name">${product.name.substring(0, 20)}</div>
+                            </div>
+                            <div class="current-price-box">
+                                <div class="price-label">零售价</div>
+                                <div class="current-price">¥${product.price}</div>
+                                ${isLowest ?
+                                    '<div class="lowest-badge">当前已是最低价</div>' :
+                                    `<div class="premium-badge">溢价 ¥${premium}</div>`
+                                }
+                            </div>
+                        </div>
+                        <div class="price-mini-chart">
+                            <canvas id="priceChart_${index}" onclick="handleChartClick(event, ${index})"></canvas>
+                        </div>
+                        <div class="chart-date-labels" id="chartLabels_${index}">
+                            <!-- 日期标签动态生成 -->
+                        </div>
+                        <div class="price-section-footer">
+                            <span class="min-price-hint">历史最低 ¥${minPrice}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = html;
+
+            // 存储数据供后续使用
+            window.productPriceData = analyzedProducts.map((p, i) => ({
+                prices: generate30DayPrices(p.priceHistory, p.price),
+                product: p
+            }));
+
+            // 延迟绘制折线图
+            setTimeout(drawAllCharts, 100);
+        }
+
+        // 生成30天日期数组
+        function generate30Days() {
+            const days = [];
+            const today = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                days.push({
+                    date: date,
+                    dateStr: `${date.getMonth() + 1}/${date.getDate()}`,
+                    fullStr: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+                });
+            }
+            return days;
+        }
+
+        // 生成30天价格数据
+        function generate30DayPrices(originalData, basePrice) {
+            if (!originalData || originalData.length === 0) {
+                // 如果没有数据，基于当前价格生成模拟数据
+                return Array(30).fill(0).map(() => Math.round(basePrice * (0.85 + Math.random() * 0.3)));
+            }
+            // 将原有数据点插值到30天
+            const result = [];
+            for (let i = 0; i < 30; i++) {
+                const originalIndex = i / 29 * (originalData.length - 1);
+                const lowerIndex = Math.floor(originalIndex);
+                const upperIndex = Math.min(lowerIndex + 1, originalData.length - 1);
+                const ratio = originalIndex - lowerIndex;
+                const value = originalData[lowerIndex] * (1 - ratio) + originalData[upperIndex] * ratio;
+                result.push(Math.round(value * 100) / 100);
+            }
+            return result;
+        }
+
+        // 绘制所有商品的折线图
+        function drawAllCharts() {
+            const days = generate30Days();
+
+            analyzedProducts.forEach((product, index) => {
+                const canvas = document.getElementById(`priceChart_${index}`);
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                const container = canvas.parentElement;
+
+                // 设置画布尺寸
+                const containerWidth = container.offsetWidth || 280;
+                const containerHeight = container.offsetHeight || 80;
+
+                canvas.width = containerWidth * 2;
+                canvas.height = containerHeight * 2;
+                ctx.scale(2, 2);
+
+                const width = containerWidth;
+                const height = containerHeight;
+                const padding = { top: 10, right: 10, bottom: 10, left: 10 };
+
+                // 获取价格数据
+                const priceData = window.productPriceData[index]?.prices || [];
+                if (priceData.length === 0) return;
+
+                const minVal = Math.min(...priceData) * 0.95;
+                const maxVal = Math.max(...priceData) * 1.05;
+                const range = maxVal - minVal;
+
+                // 清空画布
+                ctx.clearRect(0, 0, width, height);
+
+                // 绘制折线
+                const stepX = (width - padding.left - padding.right) / 29;
+
+                // 绘制填充区域
+                ctx.beginPath();
+                ctx.moveTo(padding.left, height - padding.bottom);
+                priceData.forEach((val, i) => {
+                    const x = padding.left + i * stepX;
+                    const y = padding.top + (height - padding.top - padding.bottom) * (1 - (val - minVal) / range);
+                    ctx.lineTo(x, y);
+                });
+                ctx.lineTo(padding.left + 29 * stepX, height - padding.bottom);
+                ctx.closePath();
+
+                // 使用渐变填充
+                const gradient = ctx.createLinearGradient(0, 0, 0, height);
+                gradient.addColorStop(0, 'rgba(123, 92, 255, 0.3)');
+                gradient.addColorStop(1, 'rgba(123, 92, 255, 0.05)');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // 绘制线条
+                ctx.beginPath();
+                priceData.forEach((val, i) => {
+                    const x = padding.left + i * stepX;
+                    const y = padding.top + (height - padding.top - padding.bottom) * (1 - (val - minVal) / range);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.strokeStyle = '#7B5CFF';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // 标记最低价点
+                const minPrice = Math.min(...priceData);
+                const minIndex = priceData.indexOf(minPrice);
+                const minX = padding.left + minIndex * stepX;
+                const minY = padding.top + (height - padding.top - padding.bottom) * (1 - (minPrice - minVal) / range);
+
+                ctx.beginPath();
+                ctx.arc(minX, minY, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#52C41A';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // 生成日期标签（每隔5天显示一个）
+                const labelsContainer = document.getElementById(`chartLabels_${index}`);
+                if (labelsContainer) {
+                    const labelIndices = [0, 5, 10, 15, 20, 25, 29];
+                    labelsContainer.innerHTML = labelIndices.map(i => {
+                        const selectedIndex = selectedDateIndices[index] || 29;
+                        return `<span class="${i === selectedIndex ? 'active' : ''}" onclick="selectDate(${index}, ${i})">${days[i].dateStr}</span>`;
+                    }).join('');
+                }
+            });
+        }
+
+        // 选择日期
+        function selectDate(productIndex, dateIndex) {
+            selectedDateIndices[productIndex] = dateIndex;
+            drawSingleChart(productIndex);
+            updatePriceDisplay(productIndex, dateIndex);
+            drawAllCharts(); // 更新日期标签的高亮状态
+        }
+
+        // 处理折线图点击
+        // 存储每个商品选中的日期索引
+        let selectedDateIndices = {};
+
+        // 处理折线图点击
+        function handleChartClick(event, productIndex) {
+            const canvas = document.getElementById(`priceChart_${productIndex}`);
+            if (!canvas || !window.productPriceData || !window.productPriceData[productIndex]) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const containerWidth = rect.width;
+            const padding = { left: 10, right: 10 };
+            const chartWidth = containerWidth - padding.left - padding.right;
+            const stepX = chartWidth / 29;
+
+            // 计算点击的日期索引
+            let index = Math.round((x - padding.left) / stepX);
+            index = Math.max(0, Math.min(29, index));
+
+            selectedDateIndices[productIndex] = index;
+
+            // 重新绘制这个图表
+            drawSingleChart(productIndex);
+
+            // 更新底部显示的价格
+            updatePriceDisplay(productIndex, index);
+        }
+
+        // 更新价格显示
+        function updatePriceDisplay(productIndex, dateIndex) {
+            const days = generate30Days();
+            const priceData = window.productPriceData[productIndex];
+            if (!priceData) return;
+
+            const selectedPrice = priceData.prices[dateIndex];
+            const product = priceData.product;
+
+            // 更新该商品区块的价格显示
+            const section = document.querySelectorAll('.price-section')[productIndex];
+            if (!section) return;
+
+            const priceBox = section.querySelector('.current-price-box');
+            if (priceBox) {
+                const premium = product.price - product.lowestPrice;
+                const isLowest = selectedPrice <= product.lowestPrice;
+
+                priceBox.innerHTML = `
+                    <div class="price-label">${days[dateIndex].fullStr}</div>
+                    <div class="current-price">¥${selectedPrice}</div>
+                    ${isLowest ?
+                        '<div class="lowest-badge">当前已是最低价</div>' :
+                        `<div class="premium-badge">溢价 ¥${Math.round(selectedPrice - product.lowestPrice)}</div>`
+                    }
+                `;
+            }
+        }
+
+        // 绘制单个商品的折线图
+        function drawSingleChart(productIndex) {
+            const canvas = document.getElementById(`priceChart_${productIndex}`);
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const container = canvas.parentElement;
+
+            const containerWidth = container.offsetWidth || 280;
+            const containerHeight = container.offsetHeight || 80;
+
+            canvas.width = containerWidth * 2;
+            canvas.height = containerHeight * 2;
+            ctx.scale(2, 2);
+
+            const width = containerWidth;
+            const height = containerHeight;
+            const padding = { top: 10, right: 10, bottom: 10, left: 10 };
+
+            const priceData = window.productPriceData[productIndex]?.prices || [];
+            if (priceData.length === 0) return;
+
+            const minVal = Math.min(...priceData) * 0.95;
+            const maxVal = Math.max(...priceData) * 1.05;
+            const range = maxVal - minVal;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const stepX = (width - padding.left - padding.right) / 29;
+
+            // 绘制填充区域
+            ctx.beginPath();
+            ctx.moveTo(padding.left, height - padding.bottom);
+            priceData.forEach((val, i) => {
+                const x = padding.left + i * stepX;
+                const y = padding.top + (height - padding.top - padding.bottom) * (1 - (val - minVal) / range);
+                ctx.lineTo(x, y);
+            });
+            ctx.lineTo(padding.left + 29 * stepX, height - padding.bottom);
+            ctx.closePath();
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, 'rgba(123, 92, 255, 0.3)');
+            gradient.addColorStop(1, 'rgba(123, 92, 255, 0.05)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // 绘制线条
+            ctx.beginPath();
+            priceData.forEach((val, i) => {
+                const x = padding.left + i * stepX;
+                const y = padding.top + (height - padding.top - padding.bottom) * (1 - (val - minVal) / range);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = '#7B5CFF';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 获取选中的日期索引
+            const selectedIndex = selectedDateIndices[productIndex] || 29;
+
+            // 绘制选中日期的竖线
+            const selectedX = padding.left + selectedIndex * stepX;
+            ctx.beginPath();
+            ctx.moveTo(selectedX, padding.top);
+            ctx.lineTo(selectedX, height - padding.bottom);
+            ctx.strokeStyle = 'rgba(123, 92, 255, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 绘制选中日期的点
+            const selectedY = padding.top + (height - padding.top - padding.bottom) * (1 - (priceData[selectedIndex] - minVal) / range);
+            ctx.beginPath();
+            ctx.arc(selectedX, selectedY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#7B5CFF';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // 显示选中日期的价格
+            ctx.fillStyle = '#7B5CFF';
+            ctx.font = 'bold 10px sans-serif';
+            // 根据点的位置调整价格显示位置
+            if (selectedX > width * 0.8) {
+                // 点在右边，价格往左显示
+                ctx.textAlign = 'right';
+                ctx.fillText('¥' + priceData[selectedIndex], selectedX - 8, selectedY - 8);
+            } else if (selectedX < width * 0.2) {
+                // 点在左边，价格往右显示
+                ctx.textAlign = 'left';
+                ctx.fillText('¥' + priceData[selectedIndex], selectedX + 8, selectedY - 8);
+            } else {
+                // 点在中间，价格居中显示
+                ctx.textAlign = 'center';
+                ctx.fillText('¥' + priceData[selectedIndex], selectedX, selectedY - 8);
+            }
+
+            // 标记最低价点（如果不在选中位置）
+            const minPrice = Math.min(...priceData);
+            const minIndex = priceData.indexOf(minPrice);
+            if (minIndex !== selectedIndex) {
+                const minX = padding.left + minIndex * stepX;
+                const minY = padding.top + (height - padding.top - padding.bottom) * (1 - (minPrice - minVal) / range);
+
+                ctx.beginPath();
+                ctx.arc(minX, minY, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#52C41A';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        // 生成口碑
+        function generateReputations() {
+            const reputationsHtml = analyzedProducts.map(p => {
+                const rep = p.reputation;
+                return `
+                    <div class="reputation-card">
+                        <div class="reputation-header">${p.name}</div>
+                        <div class="sentiment-bar">
+                            <div class="sentiment-positive" style="width: ${rep.positiveRate}%"></div>
+                            <div class="sentiment-negative" style="width: ${rep.negativeRate}%"></div>
+                        </div>
+                        <div class="sentiment-labels">
+                            <span class="positive">${rep.positiveRate}% 的正向情感</span>
+                            <span class="negative">vs ${rep.negativeRate}% 的负向情感</span>
+                        </div>
+                        <div class="review-summary">
+                            基于 <strong>${rep.totalReviews.toLocaleString()}</strong> 条评价<br>
+                            正向评价集中在<strong>${rep.positiveKeywords.join('、')}</strong>；<br>
+                            负向评价集中在<strong>${rep.negativeKeywords.join('、')}</strong>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('reputations').innerHTML = reputationsHtml;
+        }
+
+        // 返回
+        function goBack() {
+            document.getElementById('pageTwo').classList.remove('active');
+            document.getElementById('pageOne').classList.add('active');
+        }
+
+        // 监听输入变化
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('product-url-input')) {
+                const index = parseInt(e.target.closest('.product-input-item').dataset.index);
+                checkAndParseProduct(index, e.target.value);
+            }
+        });
+
+        // 复制链接到剪贴板
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // 显示复制成功提示
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0,0,0,0.7);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    z-index: 1000;
+                `;
+                toast.textContent = '链接已复制！';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 1500);
+            }).catch(err => {
+                alert('复制失败，请手动复制：' + text);
+            });
+        }
+    </script>
+</body>
+</html>
